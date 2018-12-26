@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_amber_100"
+    tools:context=".activities.SettingActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:titleTextColor="#fff"
+        app:subtitleTextColor="#f5fbff"
+        android:padding="1dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/api_support"
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/margin_14"
+        android:textColor="@color/md_white_1000"
+        android:background="@drawable/title_shape"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/set_rd_gg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layoutDirection="rtl"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:text="Google API"
+            android:padding="@dimen/margin_14"
+            android:background="@drawable/textlines"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/set_rd_yd"
+            android:padding="@dimen/margin_14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layoutDirection="rtl"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:text="Yandex API"
+            android:checked="true"
+            android:textSize="14sp"
+            android:background="@drawable/textlines"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/language_support"
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/margin_14"
+        android:textColor="@color/md_white_1000"
+        android:background="@drawable/title_shape"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+    <RadioButton
+        android:id="@+id/set_rd_vn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layoutDirection="rtl"
+        android:textAlignment="textStart"
+        android:layout_gravity="start"
+        android:text="Việt Nam"
+        android:checked="true"
+        android:padding="@dimen/margin_14"
+        android:background="@drawable/textlines"
+        android:textSize="14sp" />
+
+    <RadioButton
+        android:id="@+id/set_rd_el"
+        android:padding="@dimen/margin_14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layoutDirection="rtl"
+        android:textAlignment="textStart"
+        android:layout_gravity="start"
+        android:text="English"
+        android:textSize="14sp"
+        android:background="@drawable/textlines"/>
+
+    </RadioGroup>
+
+</LinearLayout>

@@ -1,0 +1,245 @@
+{
+  "google_flags": [
+    {
+      "name": "Arabic (Egypt)",
+      "image": "flags/EGY.png",
+      "language_code": "ar-EG"
+    },
+    {
+      "name": "Arabic (International)",
+      "image": "flags/XWW.png",
+      "language_code": "ar-AE"
+    },
+    {
+      "name": "Arabic (Saudi Arabia)",
+      "image": "flags/SAU.png",
+      "language_code": "ar-SA"
+    },
+    {
+      "name": "Bengali",
+      "image": "flags/BGD.png",
+      "language_code": "bn-BD"
+    },
+    {
+      "name": "Cambodia",
+      "image": "flags/KHM.png",
+      "language_code": "km-KH"
+    },
+    {
+      "name": "Calatan",
+      "image": "flags/ESP.png",
+      "language_code": "ca"
+    },
+    {
+      "name": "Chinese (Cantonese)",
+      "image": "flags/CHN2.png",
+      "language_code": "yue-Hant-HK"
+    },
+    {
+      "name": "Chinese (Simplified)",
+      "image": "flags/CHN.png",
+      "language_code": "cmn-Hans-CN"
+    },
+    {
+      "name": "Chinese (Tradional)",
+      "image": "flags/TWN.png",
+      "language_code": "cmn-Hant-TW"
+    },
+    {
+      "name": "Croatian",
+      "image": "flags/HRV.png",
+      "language_code": "hr-HR"
+    },
+    {
+      "name": "Czech",
+      "image": "flags/CZE.png",
+      "language_code": "cs-CZ"
+    },
+    {
+      "name": "Danish",
+      "image": "flags/DNK.png",
+      "language_code": "da-DK"
+    },
+    {
+      "name": "Dutch",
+      "image": "flags/NLD.png",
+      "language_code": "nl-NL"
+    },
+    {
+      "name": "English (AUS)",
+      "image": "flags/AUS.png",
+      "language_code": "en-AU"
+    },
+    {
+      "name": "English (India)",
+      "image": "flags/IND.png",
+      "language_code": "en-IN"
+    },
+    {
+      "name": "English (UK)",
+      "image": "flags/GBR.png",
+      "language_code": "en-GB"
+    },
+    {
+      "name": "English (USA)",
+      "image": "flags/USA.png",
+      "language_code": "en-US"
+    },
+    {
+      "name": "Filipino",
+      "image": "flags/PHL.png",
+      "language_code": "fil-PH"
+    },
+    {
+      "name": "Finnish",
+      "image": "flags/FIN.png",
+      "language_code": "fi-FI"
+    },
+    {
+      "name": "French (Canada)",
+      "image": "flags/CAN.png",
+      "language_code": "fr-CA"
+    },
+    {
+      "name": "French (France)",
+      "image": "flags/FRA.png",
+      "language_code": "fr-FR"
+    },
+    {
+      "name": "German",
+      "image": "flags/DEU.png",
+      "language_code": "de-DE"
+    },
+    {
+      "name": "Greek",
+      "image": "flags/GRC.png",
+      "language_code": "el-GR"
+    },
+    {
+      "name": "Hebrew",
+      "image": "flags/ISR.png",
+      "language_code": "he-IL"
+    },
+    {
+      "name": "Hindi",
+      "image": "flags/IND.png",
+      "language_code": "hi-IN"
+    },
+    {
+      "name": "Hungarian",
+      "image": "flags/HUN.png",
+      "language_code": "hu-HU"
+    },
+    {
+      "name": "Indonesian",
+      "image": "flags/IDN.png",
+      "language_code": "id-ID"
+    },
+    {
+      "name": "Italian",
+      "image": "flags/ITA.png",
+      "language_code": "it-IT"
+    },
+    {
+      "name": "Japanese",
+      "image": "flags/JPN.png",
+      "language_code": "ja-JP"
+    },
+    {
+      "name": "Korean",
+      "image": "flags/KOR.png",
+      "language_code": "ko-KR"
+    },
+    {
+      "name": "Latvian",
+      "image": "flags/LVN.png",
+      "language_code": "lv-LV"
+    },
+    {
+      "name": "Nepali",
+      "image": "flags/NPL.png",
+      "language_code": "ne-NP"
+    },
+    {
+      "name": "Norwegian",
+      "image": "flags/NOR.png",
+      "language_code": "no-NO"
+    },
+    {
+      "name": "Polish",
+      "image": "flags/POL.png",
+      "language_code": "pl-PL"
+    },
+    {
+      "name": "Portuguese (Brazil)",
+      "image": "flags/BRA.png",
+      "language_code": "pt-BR"
+    },
+    {
+      "name": "Portuguese (Portugal)",
+      "image": "flags/PRT.png",
+      "language_code": "pt-PT"
+    },
+    {
+      "name": "Romanian",
+      "image": "flags/ROU.png",
+      "language_code": "ro-RO"
+    },
+    {
+      "name": "Russian",
+      "image": "flags/RUS.png",
+      "language_code": "ru-RU"
+    },
+    {
+      "name": "Sinhala",
+      "image": "flags/LKA.png",
+      "language_code": "si-LK"
+    },
+    {
+      "name": "Slovak",
+      "image": "flags/SVK.png",
+      "language_code": "sk-SK"
+    },
+    {
+      "name": "Spanish (Latin America)",
+      "image": "flags/XLA.png",
+      "language_code": "es-AR"
+    },
+    {
+      "name": "Spanish (Spain)",
+      "image": "flags/ESP.png",
+      "language_code": "es-ES"
+    },
+    {
+      "name": "Swedish",
+      "image": "flags/SWE.png",
+      "language_code": "sv-SE"
+    },
+    {
+      "name": "Tamil",
+      "image": "flags/IND.png",
+      "language_code": "ta-IN"
+    },
+    {
+      "name": "Thai",
+      "image": "flags/THA.png",
+      "language_code": "th-TH"
+    },
+    {
+      "name": "Turkish",
+      "image": "flags/TUR.png",
+      "language_code": "tr-TR"
+    },
+    {
+      "name": "Ukrainian",
+      "image": "flags/UKR.png",
+      "language_code": "uk-UA"
+    },
+    {
+      "name": "Vietnamese",
+      "image": "flags/VNM.png",
+      "language_code": "vi-VN"
+    }
+  ]
+
+}

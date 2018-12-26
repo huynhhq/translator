@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Translator</string>
+    <string name="title_activity_main">Hayabusa Translator</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="text">Text</string>
+    <string name="api_support">Sử dụng API</string>
+    <string name="language_support">Ngôn ngữ</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
