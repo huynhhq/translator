@@ -25,10 +25,15 @@ import kotlinx.android.synthetic.main.fragment_voice_speak.*
 import android.util.DisplayMetrics
 import com.example.dev00.translator.animator.FadeInDownAnimator
 import com.example.dev00.translator.helpers.Constants.Companion.SPEECH_RECOGNITION_CODE
+import com.example.dev00.translator.interfaces.IYandex
 import com.example.dev00.translator.models.*
+import com.example.dev00.translator.services.ServiceManager
 import com.example.dev00.translator.utils.Utils.Companion.getStatusBarHeight
 import org.json.JSONArray
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class VoiceSpeakFragment : Fragment() {
@@ -56,6 +61,8 @@ class VoiceSpeakFragment : Fragment() {
     private var languageCodePair = ""
 
     private var MODE_SPEAK = Constants.LEFT_MODE
+
+    private lateinit var translateService: IYandex
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -156,36 +163,50 @@ class VoiceSpeakFragment : Fragment() {
     }
 
     private fun processRecognitionData(resultData: String){
-        var translationResult = Utils.yandexTranslate(resultData, this.languageCodePair, activity!!)
-        var textL = ""
-        var textR = ""
+//        var translationResult = Utils.yandexTranslate(resultData, this.languageCodePair, activity!!)
+        var call = translateService.translate(Constants.YANDEX_KEY, resultData, this.languageCodePair)
 
-        when(this.MODE_SPEAK){
-            0 -> {
-                textL = resultData
-                textR = translationResult
+        call.enqueue(object : Callback<YandexResult> {
+            override fun onResponse(call: Call<YandexResult>, response: Response<YandexResult>) {
+                var translationResult = response.body().text[0]!!
+
+                var textL = ""
+                var textR = ""
+
+                when(MODE_SPEAK){
+                    0 -> {
+                        textL = resultData
+                        textR = translationResult
+                    }
+
+                    1 -> {
+                        textL = translationResult
+                        textR = resultData
+                    }
+                }
+
+
+
+                arrData.add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
+                        , textL
+                        , appData_Singleton.getAppData()!!.rightFlag
+                        , textR))
+
+                listSpeakTextViewAdapter.setItemList(arrData)
+                listSpeakTextViewAdapter.notifyItemInserted(arrData.size - 1)
+                activity!!.main_rcv.scrollToPosition(arrData.size - 1)
+                activity!!.main_rcv.itemAnimator?.apply {
+                    addDuration = 350
+                    removeDuration = 100
+                    moveDuration = 350
+                    changeDuration = 100
+                }
             }
 
-            1 -> {
-                textL = translationResult
-                textR = resultData
+            override fun onFailure(call: Call<YandexResult>?, t: Throwable?) {
+                Utils.createToast(activity!!, "An Lol roi")
             }
-        }
-
-        this.arrData.add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
-                , textL
-                , appData_Singleton.getAppData()!!.rightFlag
-                , textR))
-
-        this.listSpeakTextViewAdapter.setItemList(arrData)
-        this.listSpeakTextViewAdapter.notifyItemInserted(arrData.size - 1)
-        activity!!.main_rcv.scrollToPosition(arrData.size - 1)
-        activity!!.main_rcv.itemAnimator?.apply {
-            addDuration = 750
-            removeDuration = 100
-            moveDuration = 750
-            changeDuration = 100
-        }
+        })
     }
 
     /**
@@ -241,6 +262,8 @@ class VoiceSpeakFragment : Fragment() {
 
         listSpeakTextViewAdapter = ListSpeakTextViewAdapter(arrData, activity!!)
 
+        //Inital Service for Yandex
+        translateService = ServiceManager.getService(Constants.YANDEX_API)
     }
 
     private fun initalListener() {

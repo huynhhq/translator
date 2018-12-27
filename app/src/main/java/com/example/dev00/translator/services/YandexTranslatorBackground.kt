@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets
 
 class YandexTranslatorBackground(val context: Context) : AsyncTask<String, Void, String>() {
 
-
+    //old code to call yandex API
     override fun doInBackground(vararg params: String?): String? {
         val textToBeTranslated: String? = params[0]
         val languagePair: String? = params[1]

@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.AppCompatDrawableManager
 
 
 class SettingActivity : AppCompatActivity() {
@@ -30,8 +31,8 @@ class SettingActivity : AppCompatActivity() {
         actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setDisplayShowHomeEnabled(true)
 
-        //change color of back arrow
-        val backArrow = ContextCompat.getDrawable(this ,R.drawable.ic_arrow_back_black_24dp)
+        //change color of back arrow, use AppCompatDrawableManager for pre-Lollipop version
+        val backArrow = AppCompatDrawableManager.get().getDrawable(this ,R.drawable.ic_arrow_back_black_24dp)
         backArrow!!.setColorFilter(ContextCompat.getColor(this,R.color.md_white_1000), PorterDuff.Mode.SRC_ATOP)
         supportActionBar!!.setHomeAsUpIndicator(backArrow)
 
