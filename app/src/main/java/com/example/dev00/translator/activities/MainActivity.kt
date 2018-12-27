@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
         if (appData_Singleton.getAppData() == null) {
             appData_Singleton.setAppData(AppData(Utils.initalFromFlag()
                     , Utils.initalToFlag()
-                    , Constants.GOOGLE_API
+                    , Constants.YANDEX_API
                     , Constants.LANGUAGE_ENGLISH))
         }
     }

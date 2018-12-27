@@ -309,7 +309,6 @@ class VoiceSpeakFragment : Fragment() {
 
         arrData = arrayListOf()
 
-        //Todo: Change list flag here
         when (appData_Singleton.getAppData()!!.api) {
             Constants.YANDEX_API -> {
                 adapterLeft = FlagListViewAdapter(activity!!, listYandexFlags)
@@ -327,7 +326,6 @@ class VoiceSpeakFragment : Fragment() {
                 adapterRight.setSelectedPosition(Utils.findIndexFlag(listGoogleFlags, Utils.initalToFlag()))
             }
         }
-
 
         listSpeakTextViewAdapter = ListSpeakTextViewAdapter(arrData, activity!!)
 
@@ -390,5 +388,34 @@ class VoiceSpeakFragment : Fragment() {
 
     private fun setLanguageCodePair(firstLanguageCode: String, secondLanguageCode: String) {
         this.languageCodePair = "$firstLanguageCode-$secondLanguageCode"
+    }
+
+    override fun onResume() {
+        super.onResume()
+        changeListFlag()
+    }
+
+    private fun changeListFlag() { translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
+
+        var lastPosLeft = adapterLeft.selected_position
+        var lastPosRight = adapterRight.selected_position
+
+        when (appData_Singleton.getAppData()!!.api) {
+            Constants.YANDEX_API -> {
+                adapterLeft = FlagListViewAdapter(activity!!, listYandexFlags)
+                adapterLeft.setSelectedPosition(lastPosLeft)
+
+                adapterRight = FlagListViewAdapter(activity!!, listYandexFlags)
+                adapterRight.setSelectedPosition(lastPosRight)
+            }
+
+            Constants.GOOGLE_API -> {
+                adapterLeft = FlagListViewAdapter(activity!!, listGoogleFlags)
+                adapterLeft.setSelectedPosition(lastPosLeft)
+
+                adapterRight = FlagListViewAdapter(activity!!, listGoogleFlags)
+                adapterRight.setSelectedPosition(lastPosRight)
+            }
+        }
     }
 }

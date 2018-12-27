@@ -21,19 +21,9 @@
       "language_code": "bn"
     },
     {
-      "name": "Cambodia",
-      "image": "flags/KHM.png",
-      "language_code": "km"
-    },
-    {
       "name": "Calatan",
       "image": "flags/ESP.png",
       "language_code": "ca"
-    },
-    {
-      "name": "Chinese (Cantonese)",
-      "image": "flags/CHN2.png",
-      "language_code": "zh"
     },
     {
       "name": "Chinese (Simplified)",

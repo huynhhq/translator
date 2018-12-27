@@ -18,7 +18,7 @@ class ServiceManager {
             if(mode!!.equals(Constants.YANDEX_API)){
                 return RetrofitClient.getClient(getURL(mode))!!.create(IYandex::class.java!!)
             }
-            return RetrofitClient.getClient(getURL(mode!!))!!.create(IGoogle::class.java!!)
+            return RetrofitClient.getClient(getURL(mode))!!.create(IGoogle::class.java!!)
         }
     }
 }
