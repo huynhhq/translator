@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/api_support"
+        android:text="@string/api_support_en"
         android:textStyle="bold"
         android:paddingLeft="@dimen/margin_14"
         android:textColor="@color/md_white_1000"
@@ -65,7 +65,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/language_support"
+        android:text="@string/language_support_en"
         android:textStyle="bold"
         android:paddingLeft="@dimen/margin_14"
         android:textColor="@color/md_white_1000"
@@ -85,7 +85,6 @@
         android:textAlignment="textStart"
         android:layout_gravity="start"
         android:text="Việt Nam"
-        android:checked="true"
         android:padding="@dimen/margin_14"
         android:background="@drawable/textlines"
         android:textSize="14sp" />
@@ -100,6 +99,7 @@
         android:textAlignment="textStart"
         android:layout_gravity="start"
         android:text="English"
+        android:checked="true"
         android:textSize="14sp"
         android:background="@drawable/textlines"/>
 

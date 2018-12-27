@@ -230,12 +230,6 @@ class OneVoiceFragment : Fragment() {
 
     private fun initalViewFragment() {
 
-        if (appData_Singleton.getAppData() == null) {
-            appData_Singleton.setAppData(AppData(Utils.initalFromFlag()
-                    , Utils.initalToFlag()
-                    , Constants.YANDEX_API
-                    , Constants.LANGUAGE_ENGLISH))
-        }
         changeFlag(appData_Singleton!!.getAppData()!!.leftFlag!!, one_img_left, activity!!)
         changeFlag(appData_Singleton!!.getAppData()!!.rightFlag!!, one_img_right, activity!!)
 

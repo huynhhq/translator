@@ -13,6 +13,8 @@ import android.content.Intent
 import android.os.Handler
 import com.example.dev00.translator.fragments.OneVoiceFragment
 import com.example.dev00.translator.helpers.Constants
+import com.example.dev00.translator.models.AppData
+import com.example.dev00.translator.models.AppData_Singleton
 import com.example.dev00.translator.utils.Utils
 
 class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteractionListener
@@ -26,12 +28,16 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
 
     private var doubleBackToExitPressedOnce: Boolean = false
 
+    private lateinit var appData_Singleton: AppData_Singleton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         context = this
 
         setupToolbar()
+
+        initalAppData()
 
         if (savedInstanceState == null) {
             supportFragmentManager
@@ -170,6 +176,17 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
         actionBar.setLogo(R.mipmap.ic_launcher)
         actionBar.setDisplayUseLogoEnabled(true)
 
+    }
+
+    private fun initalAppData(){
+        appData_Singleton = AppData_Singleton.getInstance()
+
+        if (appData_Singleton.getAppData() == null) {
+            appData_Singleton.setAppData(AppData(Utils.initalFromFlag()
+                    , Utils.initalToFlag()
+                    , Constants.GOOGLE_API
+                    , Constants.LANGUAGE_ENGLISH))
+        }
     }
 
     override fun onBackPressed() {

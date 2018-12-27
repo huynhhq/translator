@@ -67,18 +67,4 @@ class YandexTranslatorBackground(val context: Context) : AsyncTask<String, Void,
         }
         return null
     }
-
-
-    override fun onPreExecute() {
-        super.onPreExecute()
-    }
-
-    override fun onPostExecute(result: String?) {
-        super.onPostExecute(result)
-    }
-
-    override fun onProgressUpdate(vararg values: Void?) {
-        super.onProgressUpdate(*values)
-    }
-
 }

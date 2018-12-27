@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_voice_speak.*
 import android.util.DisplayMetrics
 import com.example.dev00.translator.animator.FadeInDownAnimator
 import com.example.dev00.translator.helpers.Constants.Companion.SPEECH_RECOGNITION_CODE
+import com.example.dev00.translator.interfaces.IGoogle
 import com.example.dev00.translator.interfaces.IYandex
 import com.example.dev00.translator.models.*
 import com.example.dev00.translator.services.ServiceManager
@@ -62,7 +63,7 @@ class VoiceSpeakFragment : Fragment() {
 
     private var MODE_SPEAK = Constants.LEFT_MODE
 
-    private lateinit var translateService: IYandex
+    private lateinit var translateService: Any
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -162,51 +163,106 @@ class VoiceSpeakFragment : Fragment() {
         }
     }
 
-    private fun processRecognitionData(resultData: String){
+    private fun processRecognitionData(resultData: String) {
 //        var translationResult = Utils.yandexTranslate(resultData, this.languageCodePair, activity!!)
-        var call = translateService.translate(Constants.YANDEX_KEY, resultData, this.languageCodePair)
+        var textL = ""
+        var textR = ""
+        var target = ""
 
-        call.enqueue(object : Callback<YandexResult> {
-            override fun onResponse(call: Call<YandexResult>, response: Response<YandexResult>) {
-                var translationResult = response.body().text[0]!!
+        when (appData_Singleton.getAppData()!!.api) {
+            Constants.YANDEX_API -> {
+                var call = (translateService as IYandex).translate(Constants.YANDEX_KEY, resultData, this.languageCodePair)
 
-                var textL = ""
-                var textR = ""
+                call.enqueue(object : Callback<YandexResponse> {
+                    override fun onResponse(call: Call<YandexResponse>, response: Response<YandexResponse>) {
+                        var translationResult = response.body().text[0]!!
 
-                when(MODE_SPEAK){
+                        when (MODE_SPEAK) {
+                            0 -> {
+                                textL = resultData
+                                textR = translationResult
+                            }
+
+                            1 -> {
+                                textL = translationResult
+                                textR = resultData
+                            }
+                        }
+
+                        arrData.add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
+                                , textL
+                                , appData_Singleton.getAppData()!!.rightFlag
+                                , textR))
+
+                        listSpeakTextViewAdapter.setItemList(arrData)
+                        listSpeakTextViewAdapter.notifyItemInserted(arrData.size - 1)
+                        activity!!.main_rcv.scrollToPosition(arrData.size - 1)
+                        activity!!.main_rcv.itemAnimator?.apply {
+                            addDuration = 350
+                            removeDuration = 100
+                            moveDuration = 350
+                            changeDuration = 100
+                        }
+                    }
+
+                    override fun onFailure(call: Call<YandexResponse>?, t: Throwable?) {
+                        Utils.createToast(activity!!, "An Lol roi")
+                    }
+                })
+            }
+
+            Constants.GOOGLE_API -> {
+                when (MODE_SPEAK) {
                     0 -> {
-                        textL = resultData
-                        textR = translationResult
+                        target = appData_Singleton.getAppData()!!.rightFlag!!.languageCode
                     }
 
                     1 -> {
-                        textL = translationResult
-                        textR = resultData
+                        target = appData_Singleton.getAppData()!!.leftFlag!!.languageCode
                     }
                 }
+                var call = (translateService as IGoogle).translate(Constants.GOOGLE_KEY, resultData, target)
 
+                call.enqueue(object : Callback<GoogleResponse> {
 
+                    override fun onResponse(call: Call<GoogleResponse>, response: Response<GoogleResponse>) {
+                        var translationResult = response.body().data.translations[0].translatedText
 
-                arrData.add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
-                        , textL
-                        , appData_Singleton.getAppData()!!.rightFlag
-                        , textR))
+                        when (MODE_SPEAK) {
+                            0 -> {
+                                textL = resultData
+                                textR = translationResult
+                            }
 
-                listSpeakTextViewAdapter.setItemList(arrData)
-                listSpeakTextViewAdapter.notifyItemInserted(arrData.size - 1)
-                activity!!.main_rcv.scrollToPosition(arrData.size - 1)
-                activity!!.main_rcv.itemAnimator?.apply {
-                    addDuration = 350
-                    removeDuration = 100
-                    moveDuration = 350
-                    changeDuration = 100
-                }
+                            1 -> {
+                                textL = translationResult
+                                textR = resultData
+                            }
+                        }
+
+                        arrData.add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
+                                , textL
+                                , appData_Singleton.getAppData()!!.rightFlag
+                                , textR))
+
+                        listSpeakTextViewAdapter.setItemList(arrData)
+                        listSpeakTextViewAdapter.notifyItemInserted(arrData.size - 1)
+                        activity!!.main_rcv.scrollToPosition(arrData.size - 1)
+                        activity!!.main_rcv.itemAnimator?.apply {
+                            addDuration = 350
+                            removeDuration = 100
+                            moveDuration = 350
+                            changeDuration = 100
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GoogleResponse>?, t: Throwable?) {
+                        Utils.createToast(activity!!, "An Lol roi")
+                    }
+                })
             }
 
-            override fun onFailure(call: Call<YandexResult>?, t: Throwable?) {
-                Utils.createToast(activity!!, "An Lol roi")
-            }
-        })
+        }
     }
 
     /**
@@ -254,16 +310,29 @@ class VoiceSpeakFragment : Fragment() {
         arrData = arrayListOf()
 
         //Todo: Change list flag here
-        adapterLeft = FlagListViewAdapter(activity!!, listYandexFlags)
-        adapterLeft.setSelectedPosition(Utils.findIndexFlag(listYandexFlags, Utils.initalFromFlag()))
+        when (appData_Singleton.getAppData()!!.api) {
+            Constants.YANDEX_API -> {
+                adapterLeft = FlagListViewAdapter(activity!!, listYandexFlags)
+                adapterLeft.setSelectedPosition(Utils.findIndexFlag(listYandexFlags, Utils.initalFromFlag()))
 
-        adapterRight = FlagListViewAdapter(activity!!, listYandexFlags)
-        adapterRight.setSelectedPosition(Utils.findIndexFlag(listYandexFlags, Utils.initalToFlag()))
+                adapterRight = FlagListViewAdapter(activity!!, listYandexFlags)
+                adapterRight.setSelectedPosition(Utils.findIndexFlag(listYandexFlags, Utils.initalToFlag()))
+            }
+
+            Constants.GOOGLE_API -> {
+                adapterLeft = FlagListViewAdapter(activity!!, listGoogleFlags)
+                adapterLeft.setSelectedPosition(Utils.findIndexFlag(listGoogleFlags, Utils.initalFromFlag()))
+
+                adapterRight = FlagListViewAdapter(activity!!, listGoogleFlags)
+                adapterRight.setSelectedPosition(Utils.findIndexFlag(listGoogleFlags, Utils.initalToFlag()))
+            }
+        }
+
 
         listSpeakTextViewAdapter = ListSpeakTextViewAdapter(arrData, activity!!)
 
         //Inital Service for Yandex
-        translateService = ServiceManager.getService(Constants.YANDEX_API)
+        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
     }
 
     private fun initalListener() {
@@ -300,12 +369,6 @@ class VoiceSpeakFragment : Fragment() {
 
     private fun initalViewFragment() {
 
-        if (appData_Singleton.getAppData() == null) {
-            appData_Singleton.setAppData(AppData(Utils.initalFromFlag()
-                    , Utils.initalToFlag()
-                    , Constants.YANDEX_API
-                    , Constants.LANGUAGE_ENGLISH))
-        }
         changeFlag(appData_Singleton!!.getAppData()!!.leftFlag!!, img_left, activity!!)
         changeFlag(appData_Singleton!!.getAppData()!!.rightFlag!!, img_right, activity!!)
 

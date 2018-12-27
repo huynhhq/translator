@@ -9,12 +9,11 @@ import com.example.dev00.translator.models.Flag
 import java.io.InputStream
 import android.util.DisplayMetrics
 import com.example.dev00.translator.helpers.Constants
-import com.example.dev00.translator.models.YandexResult
+import com.example.dev00.translator.models.YandexResponse
 import com.example.dev00.translator.services.YandexTranslatorBackground
 import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONException
-import org.json.JSONObject
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.ArrayList
@@ -130,7 +129,7 @@ class Utils {
             val translatorBackgroundTask = YandexTranslatorBackground(context)
             var translationResult = translatorBackgroundTask.execute(textToBeTranslated, languagePair)
             val gson = Gson()
-            val data: YandexResult = gson.fromJson(translationResult.get(), YandexResult::class.java)
+            val data: YandexResponse = gson.fromJson(translationResult.get(), YandexResponse::class.java)
             return data.text.get(0)
         }
 
