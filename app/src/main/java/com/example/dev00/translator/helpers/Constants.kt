@@ -35,6 +35,7 @@ class Constants {
         //Message
         val SPEECH_RECOGNITION_NOT_SUPPORT="Sorry! Speech recognition is not supported in this device."
         val MUST_IMPLEMENT_ONFRAGMENTINTERRACTIONLISTENER = " must implement OnFragmentInteractionListener"
+        val CHECK_YOUR_INTERNET = "Please check your internet and try again!!!"
         //end Message
 
         //Key API

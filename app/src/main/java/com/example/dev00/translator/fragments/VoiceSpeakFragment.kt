@@ -29,6 +29,7 @@ import com.example.dev00.translator.interfaces.IGoogle
 import com.example.dev00.translator.interfaces.IYandex
 import com.example.dev00.translator.models.*
 import com.example.dev00.translator.services.ServiceManager
+import com.example.dev00.translator.services.TTS
 import com.example.dev00.translator.utils.Utils.Companion.getStatusBarHeight
 import org.json.JSONArray
 import org.json.JSONObject
@@ -168,6 +169,7 @@ class VoiceSpeakFragment : Fragment() {
         var textL = ""
         var textR = ""
         var target = ""
+        var localeStr = ""
 
         when (appData_Singleton.getAppData()!!.api) {
             Constants.YANDEX_API -> {
@@ -181,11 +183,13 @@ class VoiceSpeakFragment : Fragment() {
                             0 -> {
                                 textL = resultData
                                 textR = translationResult
+                                localeStr = appData_Singleton.getAppData()!!.rightFlag!!.languageCode
                             }
 
                             1 -> {
                                 textL = translationResult
                                 textR = resultData
+                                localeStr = appData_Singleton.getAppData()!!.leftFlag!!.languageCode
                             }
                         }
 
@@ -203,10 +207,12 @@ class VoiceSpeakFragment : Fragment() {
                             moveDuration = 350
                             changeDuration = 100
                         }
+
+                        TTS(activity!!, translationResult, localeStr)
                     }
 
                     override fun onFailure(call: Call<YandexResponse>?, t: Throwable?) {
-                        Utils.createToast(activity!!, "An Lol roi")
+                        Utils.createToast(activity!!, Constants.CHECK_YOUR_INTERNET)
                     }
                 })
             }
@@ -232,11 +238,13 @@ class VoiceSpeakFragment : Fragment() {
                             0 -> {
                                 textL = resultData
                                 textR = translationResult
+                                localeStr = appData_Singleton.getAppData()!!.rightFlag!!.languageCode
                             }
 
                             1 -> {
                                 textL = translationResult
                                 textR = resultData
+                                localeStr = appData_Singleton.getAppData()!!.leftFlag!!.languageCode
                             }
                         }
 
@@ -254,10 +262,12 @@ class VoiceSpeakFragment : Fragment() {
                             moveDuration = 350
                             changeDuration = 100
                         }
+
+                        TTS(activity!!, translationResult, localeStr)
                     }
 
                     override fun onFailure(call: Call<GoogleResponse>?, t: Throwable?) {
-                        Utils.createToast(activity!!, "An Lol roi")
+                        Utils.createToast(activity!!, Constants.CHECK_YOUR_INTERNET)
                     }
                 })
             }
@@ -392,10 +402,11 @@ class VoiceSpeakFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        changeListFlag()
+        changeListFlagAfterChange()
     }
 
-    private fun changeListFlag() { translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
+    private fun changeListFlagAfterChange() {
+        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
 
         var lastPosLeft = adapterLeft.selected_position
         var lastPosRight = adapterRight.selected_position
@@ -407,6 +418,9 @@ class VoiceSpeakFragment : Fragment() {
 
                 adapterRight = FlagListViewAdapter(activity!!, listYandexFlags)
                 adapterRight.setSelectedPosition(lastPosRight)
+
+                appData_Singleton.getAppData()!!.leftFlag = listYandexFlags[lastPosLeft]
+                appData_Singleton.getAppData()!!.rightFlag = listYandexFlags[lastPosRight]
             }
 
             Constants.GOOGLE_API -> {
@@ -415,6 +429,9 @@ class VoiceSpeakFragment : Fragment() {
 
                 adapterRight = FlagListViewAdapter(activity!!, listGoogleFlags)
                 adapterRight.setSelectedPosition(lastPosRight)
+
+                appData_Singleton.getAppData()!!.leftFlag = listGoogleFlags[lastPosLeft]
+                appData_Singleton.getAppData()!!.rightFlag = listGoogleFlags[lastPosRight]
             }
         }
     }

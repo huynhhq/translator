@@ -13,14 +13,15 @@
 <TextView
     android:id="@+id/tv_speak_text_left"
     android:layout_weight="1"
-    android:padding="@dimen/margin_10"
+    android:padding="@dimen/margin_14"
     android:text="Abrabic ()"
     android:textColor="@color/md_black_1000"
     android:textSize="15dp"
     android:layout_marginRight="@dimen/margin_1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/left_bubble_chat"
+    android:layout_marginLeft="3dp"
+    android:background="@drawable/shape_speak_text_left"
     />
 
     <TextView
@@ -28,15 +29,14 @@
         android:layout_weight="1"
         android:layout_marginLeft="@dimen/margin_1"
         android:layout_gravity="right"
-        android:padding="@dimen/margin_10"
+        android:padding="@dimen/margin_14"
         android:text="Abrabic (Egypt)"
         android:textColor="@color/md_black_1000"
         android:textSize="15dp"
+        android:layout_marginRight="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/right_bubble_chat"
+        android:background="@drawable/shape_speak_text_right"
         />
-
-
 
 </LinearLayout>
