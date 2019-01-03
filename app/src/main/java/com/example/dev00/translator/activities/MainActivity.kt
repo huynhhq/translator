@@ -26,6 +26,10 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
 
     private val TAG_TWO_VOICE = "TWO_VOICE"
 
+    private val TAG_TEXT_LEFT = "TEXT_LEFT"
+
+    private val TAG_TEXT_RIGHT = "TEXT_RIGHT"
+
     private var doubleBackToExitPressedOnce: Boolean = false
 
     private lateinit var appData_Singleton: AppData_Singleton
@@ -78,47 +82,77 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun setupSimpleFingerGestures(){
+    private fun setupSimpleFingerGestures() {
         val mySfg = SimpleFingerGestures()
         mySfg.setDebug(true);
         mySfg.setConsumeTouchEvents(true);
         mySfg.setOnFingerGestureListener(object : SimpleFingerGestures.OnFingerGestureListener {
             override fun onSwipeUp(fingers: Int, gestureDuration: Long, gestureDistance: Double): Boolean {
-                if (fingers == 1) {
-                    var f = supportFragmentManager!!.findFragmentByTag(TAG_TWO_VOICE)
-                    when (f) {
-                        null -> {
-                            supportFragmentManager
-                                    .beginTransaction()
-                                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
-                                    .replace(R.id.bottom_layout, VoiceSpeakFragment.newInstance(), TAG_TWO_VOICE)
-                                    .commit()
-                            f = supportFragmentManager!!.findFragmentByTag(TAG_ONE_VOICE)
-                            supportFragmentManager.beginTransaction().remove(f!!).commit()
-
-                        }
-                        else -> {
-                            supportFragmentManager
-                                    .beginTransaction()
-                                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
-                                    .replace(R.id.bottom_layout, OneVoiceFragment.newInstance(), TAG_ONE_VOICE)
-                                    .commit()
-                            supportFragmentManager.beginTransaction().remove(f!!).commit()
-
-                        }
-                    }
-                }
+                //Todo: talk one for two languages (Pending)
+//                if (fingers == 1) {
+//                    var f = supportFragmentManager!!.findFragmentByTag(TAG_TWO_VOICE)
+//                    when (f) {
+//                        null -> {
+//                            supportFragmentManager
+//                                    .beginTransaction()
+//                                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
+//                                    .replace(R.id.bottom_layout, VoiceSpeakFragment.newInstance(), TAG_TWO_VOICE)
+//                                    .commit()
+//                            f = supportFragmentManager!!.findFragmentByTag(TAG_ONE_VOICE)
+//                            supportFragmentManager.beginTransaction().remove(f!!).commit()
+//
+//                        }
+//                        else -> {
+//                            supportFragmentManager
+//                                    .beginTransaction()
+//                                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
+//                                    .replace(R.id.bottom_layout, OneVoiceFragment.newInstance(), TAG_ONE_VOICE)
+//                                    .commit()
+//                            supportFragmentManager.beginTransaction().remove(f!!).commit()
+//
+//                        }
+//                    }
+//                }
                 return false
             }
 
             override fun onSwipeDown(fingers: Int, gestureDuration: Long, gestureDistance: Double): Boolean {
+                //Todo: talk one for two languages (Pending)
+//                if (fingers == 1) {
+//                    var f = supportFragmentManager!!.findFragmentByTag(TAG_TWO_VOICE)
+//                    when (f) {
+//                        null -> {
+//                            supportFragmentManager
+//                                    .beginTransaction()
+//                                    .setCustomAnimations(R.anim.slide_in_down, R.anim.slide_out_down)
+//                                    .replace(R.id.bottom_layout, VoiceSpeakFragment.newInstance(), TAG_TWO_VOICE)
+//                                    .commit()
+//                            f = supportFragmentManager!!.findFragmentByTag(TAG_ONE_VOICE)
+//                            supportFragmentManager.beginTransaction().remove(f!!).commit()
+//
+//                        }
+//                        else -> {
+//                            supportFragmentManager
+//                                    .beginTransaction()
+//                                    .setCustomAnimations(R.anim.slide_in_down, R.anim.slide_out_down)
+//                                    .replace(R.id.bottom_layout, OneVoiceFragment.newInstance(), TAG_ONE_VOICE)
+//                                    .commit()
+//                            supportFragmentManager.beginTransaction().remove(f!!).commit()
+//
+//                        }
+//                    }
+//                }
+                return false
+            }
+
+            override fun onSwipeLeft(fingers: Int, gestureDuration: Long, gestureDistance: Double): Boolean {
                 if (fingers == 1) {
                     var f = supportFragmentManager!!.findFragmentByTag(TAG_TWO_VOICE)
                     when (f) {
                         null -> {
                             supportFragmentManager
                                     .beginTransaction()
-                                    .setCustomAnimations(R.anim.slide_in_down, R.anim.slide_out_down)
+                                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
                                     .replace(R.id.bottom_layout, VoiceSpeakFragment.newInstance(), TAG_TWO_VOICE)
                                     .commit()
                             f = supportFragmentManager!!.findFragmentByTag(TAG_ONE_VOICE)
@@ -128,7 +162,7 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
                         else -> {
                             supportFragmentManager
                                     .beginTransaction()
-                                    .setCustomAnimations(R.anim.slide_in_down, R.anim.slide_out_down)
+                                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
                                     .replace(R.id.bottom_layout, OneVoiceFragment.newInstance(), TAG_ONE_VOICE)
                                     .commit()
                             supportFragmentManager.beginTransaction().remove(f!!).commit()
@@ -136,10 +170,6 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
                         }
                     }
                 }
-                return false
-            }
-
-            override fun onSwipeLeft(fingers: Int, gestureDuration: Long, gestureDistance: Double): Boolean {
                 return false
             }
 
@@ -163,7 +193,7 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
         root_layout.setOnTouchListener(mySfg)
     }
 
-    private fun setupToolbar(){
+    private fun setupToolbar() {
         setSupportActionBar(toolbar)
         // Now get the support action bar
         val actionBar = supportActionBar
@@ -178,7 +208,7 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
 
     }
 
-    private fun initalAppData(){
+    private fun initalAppData() {
         appData_Singleton = AppData_Singleton.getInstance()
 
         if (appData_Singleton.getAppData() == null) {

@@ -118,12 +118,14 @@ class OneVoiceFragment : Fragment() {
      * Start speech to text intent. This opens up Google Speech Recognition API dialog box to listen the speech input.
      */
     private fun startSpeechToText(context: Context, language: String, languageCode: String) {
+
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, languageCode)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
                 language)
+
         try {
             startActivityForResult(intent, Constants.SPEECH_RECOGNITION_CODE)
         } catch (a: ActivityNotFoundException) {
@@ -224,7 +226,7 @@ class OneVoiceFragment : Fragment() {
             setLanguageCodePair(appData_Singleton.getAppData()!!.leftFlag!!.languageCode
                     , appData_Singleton.getAppData()!!.rightFlag!!.languageCode)
 
-            startSpeechToText(activity!!, language!!.name, language!!.languageCode)
+            startSpeechToText(activity!!, "tr-TR", language!!.languageCode)
         })
     }
 
@@ -253,4 +255,5 @@ class OneVoiceFragment : Fragment() {
     private fun setLanguageCodePair(firstLanguageCode: String, secondLanguageCode: String) {
         this.languageCodePair = "$firstLanguageCode-$secondLanguageCode"
     }
+
 }

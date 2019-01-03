@@ -2,6 +2,7 @@ package com.example.dev00.translator.fragments
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -36,6 +37,8 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.InputStream
+import java.sql.Array
 
 
 class VoiceSpeakFragment : Fragment() {
@@ -133,12 +136,24 @@ class VoiceSpeakFragment : Fragment() {
      * Start speech to text intent. This opens up Google Speech Recognition API dialog box to listen the speech input.
      */
     private fun startSpeechToText(context: Context, language: String, languageCode: String) {
+
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, languageCode)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
                 language)
+
+
+//        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, language)
+//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, language)
+//        intent.putExtra(RecognizerIntent.EXTRA_SUPPORTED_LANGUAGES, language)
+//        intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, language)
+//        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, language)
+//        intent.putExtra(RecognizerIntent.EXTRA_RESULTS, language)
+
         try {
             startActivityForResult(intent, SPEECH_RECOGNITION_CODE)
         } catch (a: ActivityNotFoundException) {
