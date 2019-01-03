@@ -69,6 +69,12 @@ class VoiceSpeakFragment : Fragment() {
 
     private lateinit var translateService: Any
 
+    private val TAG_TWO_VOICE = "TWO_VOICE"
+
+    private val TAG_TEXT_LEFT = "TEXT_LEFT"
+
+    private val TAG_TEXT_RIGHT = "TEXT_RIGHT"
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         initalVar()
@@ -143,17 +149,6 @@ class VoiceSpeakFragment : Fragment() {
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
                 language)
-
-
-//        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, language)
-//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, language)
-//        intent.putExtra(RecognizerIntent.EXTRA_SUPPORTED_LANGUAGES, language)
-//        intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, language)
-//        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, language)
-//        intent.putExtra(RecognizerIntent.EXTRA_RESULTS, language)
-
         try {
             startActivityForResult(intent, SPEECH_RECOGNITION_CODE)
         } catch (a: ActivityNotFoundException) {
@@ -290,17 +285,6 @@ class VoiceSpeakFragment : Fragment() {
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
     }
@@ -388,6 +372,26 @@ class VoiceSpeakFragment : Fragment() {
 
             startSpeechToText(activity!!, language!!.name, language!!.languageCode)
         })
+
+        iv_keyboard_left.setOnClickListener {
+            var f = activity!!.supportFragmentManager!!.findFragmentByTag(TAG_TWO_VOICE)
+            activity!!.supportFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right)
+                    .replace(R.id.bottom_layout, TypeTextFragment.newInstance(TAG_TEXT_LEFT), TAG_TEXT_LEFT)
+                    .commit()
+            activity!!.supportFragmentManager.beginTransaction().remove(f!!).commit()
+        }
+
+        iv_keyboard_right.setOnClickListener {
+            var f = activity!!.supportFragmentManager!!.findFragmentByTag(TAG_TWO_VOICE)
+            activity!!.supportFragmentManager
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left)
+                    .replace(R.id.bottom_layout, TypeTextFragment.newInstance(TAG_TEXT_RIGHT), TAG_TEXT_RIGHT)
+                    .commit()
+            activity!!.supportFragmentManager.beginTransaction().remove(f!!).commit()
+        }
     }
 
     private fun initalViewFragment() {

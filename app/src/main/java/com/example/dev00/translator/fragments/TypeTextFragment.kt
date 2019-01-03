@@ -4,49 +4,48 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.example.dev00.translator.R
+import com.example.dev00.translator.models.AppData_Singleton
+import com.example.dev00.translator.utils.Utils
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_type_text.*
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [TypeTextFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [TypeTextFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class TypeTextFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
     private var listener: OnFragmentInteractionListener? = null
+
+    private lateinit var appData_Singleton: AppData_Singleton
+
+    private val TAG_TWO_VOICE = "TWO_VOICE"
+
+    private var TEXT_DIRECTION = ""
+
+    private val TAG_TEXT_LEFT = "TEXT_LEFT"
+
+    private val TAG_TEXT_RIGHT = "TEXT_RIGHT"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        activity!!.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        initalVar()
         return inflater.inflate(R.layout.fragment_type_text, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initalListener()
+
+        initalViewFragment()
     }
 
     override fun onAttach(context: Context) {
@@ -63,39 +62,66 @@ class TypeTextFragment : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TypeTextFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+
+        fun newInstance(param: String) =
                 TypeTextFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
+                        TEXT_DIRECTION = param
                     }
                 }
+    }
+
+    private fun initalVar() {
+        appData_Singleton = AppData_Singleton.getInstance()
+    }
+
+    private fun initalListener() {
+        iv_back_voice.setOnClickListener {
+            var f = activity!!.supportFragmentManager!!.findFragmentByTag(TEXT_DIRECTION)
+            when (TEXT_DIRECTION) {
+                TAG_TEXT_RIGHT -> {
+                    activity!!.supportFragmentManager
+                            .beginTransaction()
+                            .setCustomAnimations(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right)
+                            .replace(R.id.bottom_layout, VoiceSpeakFragment.newInstance(), TAG_TWO_VOICE)
+                            .commit()
+                    activity!!.supportFragmentManager.beginTransaction().remove(f!!).commit()
+                }
+                TAG_TEXT_LEFT -> {
+                    activity!!.supportFragmentManager
+                            .beginTransaction()
+                            .setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left)
+                            .replace(R.id.bottom_layout, VoiceSpeakFragment.newInstance(), TAG_TWO_VOICE)
+                            .commit()
+                    activity!!.supportFragmentManager.beginTransaction().remove(f!!).commit()
+                }
+            }
+        }
+    }
+
+    private fun initalViewFragment() {
+
+        when (TEXT_DIRECTION){
+            TAG_TEXT_LEFT -> {
+                text_translate.hint = appData_Singleton.getAppData()!!.leftFlag!!.name
+            }
+            TAG_TEXT_RIGHT -> {
+                text_translate.hint = appData_Singleton.getAppData()!!.rightFlag!!.name
+            }
+        }
+
+        val displayMetrics = DisplayMetrics()
+        activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
+
+        activity!!.main_li.layoutParams.height = (displayMetrics.heightPixels
+                - Utils.convertDpToPixel(50.toFloat(), activity!!).toInt()
+                - activity!!.toolbar.layoutParams.height
+                - Utils.getStatusBarHeight(activity!!))
     }
 }

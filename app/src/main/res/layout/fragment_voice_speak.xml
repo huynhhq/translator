@@ -23,6 +23,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/iv_keyboard_left"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,7 +51,7 @@
 
             <ImageView
                 android:id="@+id/img_voice_left"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/microphone" />
 
@@ -82,7 +83,7 @@
 
                 <ImageView
                     android:id="@+id/img_voice_right"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/microphone" />
 
@@ -97,6 +98,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/iv_keyboard_right"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

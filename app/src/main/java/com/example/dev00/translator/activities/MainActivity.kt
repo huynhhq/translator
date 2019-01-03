@@ -10,15 +10,22 @@ import com.example.dev00.translator.fragments.VoiceSpeakFragment
 import `in`.championswimmer.sfg.lib.SimpleFingerGestures
 import android.content.Context
 import android.content.Intent
+import android.graphics.Canvas
 import android.os.Handler
+import android.support.v7.widget.DividerItemDecoration
 import com.example.dev00.translator.fragments.OneVoiceFragment
+import com.example.dev00.translator.fragments.TypeTextFragment
 import com.example.dev00.translator.helpers.Constants
 import com.example.dev00.translator.models.AppData
 import com.example.dev00.translator.models.AppData_Singleton
 import com.example.dev00.translator.utils.Utils
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.LinearLayoutManager
+
+
 
 class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteractionListener
-        , OneVoiceFragment.OnFragmentInteractionListener {
+        , OneVoiceFragment.OnFragmentInteractionListener, TypeTextFragment.OnFragmentInteractionListener {
 
     private lateinit var context: Context
 
@@ -54,7 +61,6 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu to use in the action bar
         val inflater = menuInflater
         inflater.inflate(R.menu.toolbar_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -79,7 +85,7 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
     }
 
     override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     private fun setupSimpleFingerGestures() {
@@ -150,20 +156,13 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
                     var f = supportFragmentManager!!.findFragmentByTag(TAG_TWO_VOICE)
                     when (f) {
                         null -> {
-                            supportFragmentManager
-                                    .beginTransaction()
-                                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
-                                    .replace(R.id.bottom_layout, VoiceSpeakFragment.newInstance(), TAG_TWO_VOICE)
-                                    .commit()
-                            f = supportFragmentManager!!.findFragmentByTag(TAG_ONE_VOICE)
-                            supportFragmentManager.beginTransaction().remove(f!!).commit()
 
                         }
                         else -> {
                             supportFragmentManager
                                     .beginTransaction()
-                                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
-                                    .replace(R.id.bottom_layout, OneVoiceFragment.newInstance(), TAG_ONE_VOICE)
+                                    .setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left)
+                                    .replace(R.id.bottom_layout, TypeTextFragment.newInstance(TAG_TEXT_RIGHT), TAG_TEXT_RIGHT)
                                     .commit()
                             supportFragmentManager.beginTransaction().remove(f!!).commit()
 
@@ -174,6 +173,23 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
             }
 
             override fun onSwipeRight(fingers: Int, gestureDuration: Long, gestureDistance: Double): Boolean {
+                if (fingers == 1) {
+                    var f = supportFragmentManager!!.findFragmentByTag(TAG_TWO_VOICE)
+                    when (f) {
+                        null -> {
+
+                        }
+                        else -> {
+                            supportFragmentManager
+                                    .beginTransaction()
+                                    .setCustomAnimations(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right)
+                                    .replace(R.id.bottom_layout, TypeTextFragment.newInstance(TAG_TEXT_LEFT), TAG_TEXT_LEFT)
+                                    .commit()
+                            supportFragmentManager.beginTransaction().remove(f!!).commit()
+
+                        }
+                    }
+                }
                 return false
             }
 
