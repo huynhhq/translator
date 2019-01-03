@@ -288,6 +288,7 @@
     <color name="md_yellow_A200">#FFFF00</color>
     <color name="md_yellow_A400">#FFEA00</color>
     <color name="md_yellow_A700">#FFD600</color>
+    <color name="deep_sky_blue">#00bfff</color>
     <color name="primary">@color/colorPrimary</color>
     <color name="color_rd">#FFDDDDDD</color>
     <color name="primary_dark">@color/colorPrimaryDark</color>

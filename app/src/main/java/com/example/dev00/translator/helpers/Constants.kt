@@ -8,6 +8,7 @@ class Constants {
         val JSON_TYPE_YANDEX_FLAGS = "yandex_flags"
         val TITLE_TOOLBAR = "Voice Translator"
         val TITLE_SETTING = "Setting"
+        val TITLE_ABOUT = "About us"
         val LEFT_LANGUAGE: Int = 0
         val RIGHT_LANGUAGE: Int = 1
         val SPEECH_RECOGNITION_CODE = 1

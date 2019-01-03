@@ -2,7 +2,6 @@ package com.example.dev00.translator.fragments
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,7 +9,6 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.widget.ImageView
@@ -32,14 +30,12 @@ import com.example.dev00.translator.models.*
 import com.example.dev00.translator.services.ServiceManager
 import com.example.dev00.translator.services.TTS
 import com.example.dev00.translator.utils.Utils.Companion.getStatusBarHeight
+import kotlinx.android.synthetic.main.fragment_type_text.*
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.InputStream
-import java.sql.Array
-
 
 class VoiceSpeakFragment : Fragment() {
 
@@ -52,8 +48,6 @@ class VoiceSpeakFragment : Fragment() {
     private lateinit var listSpeakTextViewAdapter: ListSpeakTextViewAdapter
 
     private lateinit var appData_Singleton: AppData_Singleton
-
-    private lateinit var arrData: ArrayList<SpTextData>
 
     private lateinit var objGoogleFlags: JSONArray
 
@@ -203,14 +197,19 @@ class VoiceSpeakFragment : Fragment() {
                             }
                         }
 
-                        arrData.add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
-                                , textL
-                                , appData_Singleton.getAppData()!!.rightFlag
-                                , textR))
+                        appData_Singleton.getAppData()!!
+                                         .arrTranslateData
+                                         .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
+                                                        , textL
+                                                        , appData_Singleton.getAppData()!!.rightFlag
+                                                        , textR))
 
-                        listSpeakTextViewAdapter.setItemList(arrData)
-                        listSpeakTextViewAdapter.notifyItemInserted(arrData.size - 1)
-                        activity!!.main_rcv.scrollToPosition(arrData.size - 1)
+                        listSpeakTextViewAdapter.setItemList(appData_Singleton
+                                                            .getAppData()!!.arrTranslateData)
+                        listSpeakTextViewAdapter.notifyItemInserted(appData_Singleton.getAppData()!!
+                                                                    .arrTranslateData.size - 1)
+                        activity!!.main_rcv.scrollToPosition(appData_Singleton.getAppData()!!
+                                                            .arrTranslateData.size - 1)
                         activity!!.main_rcv.itemAnimator?.apply {
                             addDuration = 350
                             removeDuration = 100
@@ -258,14 +257,19 @@ class VoiceSpeakFragment : Fragment() {
                             }
                         }
 
-                        arrData.add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
-                                , textL
-                                , appData_Singleton.getAppData()!!.rightFlag
-                                , textR))
+                        appData_Singleton.getAppData()!!
+                                         .arrTranslateData
+                                         .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
+                                                        , textL
+                                                        , appData_Singleton.getAppData()!!.rightFlag
+                                                        , textR))
 
-                        listSpeakTextViewAdapter.setItemList(arrData)
-                        listSpeakTextViewAdapter.notifyItemInserted(arrData.size - 1)
-                        activity!!.main_rcv.scrollToPosition(arrData.size - 1)
+                        listSpeakTextViewAdapter.setItemList(appData_Singleton.getAppData()!!
+                                                            .arrTranslateData)
+                        listSpeakTextViewAdapter.notifyItemInserted(appData_Singleton.getAppData()!!
+                                                                    .arrTranslateData.size - 1)
+                        activity!!.main_rcv.scrollToPosition(appData_Singleton.getAppData()!!
+                                                            .arrTranslateData.size - 1)
                         activity!!.main_rcv.itemAnimator?.apply {
                             addDuration = 350
                             removeDuration = 100
@@ -316,8 +320,6 @@ class VoiceSpeakFragment : Fragment() {
 
         appData_Singleton = AppData_Singleton.getInstance()
 
-        arrData = arrayListOf()
-
         when (appData_Singleton.getAppData()!!.api) {
             Constants.YANDEX_API -> {
                 adapterLeft = FlagListViewAdapter(activity!!, listYandexFlags)
@@ -336,13 +338,22 @@ class VoiceSpeakFragment : Fragment() {
             }
         }
 
-        listSpeakTextViewAdapter = ListSpeakTextViewAdapter(arrData, activity!!)
+        listSpeakTextViewAdapter = ListSpeakTextViewAdapter(appData_Singleton.getAppData()!!.arrTranslateData, activity!!)
 
         //Inital Service for Yandex
         translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
     }
 
     private fun initalListener() {
+        Utils.imageEffect(iv_keyboard_left, activity!!)
+        Utils.imageEffect(iv_keyboard_right, activity!!)
+
+        Utils.imageEffect(img_left, activity!!)
+        Utils.imageEffect(img_right, activity!!)
+
+        Utils.imageChangeEffect(img_voice_left, R.drawable.microphone, R.drawable.microphone_down, activity!!)
+        Utils.imageChangeEffect(img_voice_right, R.drawable.microphone, R.drawable.microphone_down, activity!!)
+
         img_left.setOnClickListener({
             openFlagDialog(activity!!, Constants.LEFT_LANGUAGE, adapterLeft)
         })
@@ -402,8 +413,6 @@ class VoiceSpeakFragment : Fragment() {
         activity!!.main_rcv.layoutManager = LinearLayoutManager(activity!!)
         activity!!.main_rcv.setHasFixedSize(true)
         activity!!.main_rcv.itemAnimator = FadeInDownAnimator(null)
-        activity!!.main_rcv.addItemDecoration(DividerItemDecoration(activity!!.main_rcv.context
-                , DividerItemDecoration.VERTICAL))
         activity!!.main_rcv.adapter = listSpeakTextViewAdapter
 
         val displayMetrics = DisplayMetrics()

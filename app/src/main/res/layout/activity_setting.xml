@@ -104,6 +104,19 @@
         android:textSize="14sp"
         android:background="@drawable/textlines"/>
 
+        <RadioButton
+            android:id="@+id/set_rd_jp"
+            android:padding="@dimen/margin_14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layoutDirection="rtl"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:text="Japanese"
+            android:textSize="14sp"
+            android:background="@drawable/textlines"/>
+
     </RadioGroup>
 
 </LinearLayout>

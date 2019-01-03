@@ -21,7 +21,7 @@ import com.example.dev00.translator.models.AppData_Singleton
 import com.example.dev00.translator.utils.Utils
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
-
+import com.example.dev00.translator.models.SpTextData
 
 
 class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteractionListener
@@ -77,7 +77,15 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
             }
 
             R.id.action_about_us -> {
+                var intent = Intent()
+                intent.setClass(this@MainActivity, AboutUsActivity::class.java)
+                startActivity(intent)
+                return true
+            }
 
+            R.id.action_clear-> {
+                appData_Singleton.getAppData()!!.arrTranslateData.clear()
+                main_rcv.adapter!!.notifyDataSetChanged()
                 return true
             }
         }
@@ -226,12 +234,13 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
 
     private fun initalAppData() {
         appData_Singleton = AppData_Singleton.getInstance()
-
+        var arrData: ArrayList<SpTextData> = arrayListOf()
         if (appData_Singleton.getAppData() == null) {
             appData_Singleton.setAppData(AppData(Utils.initalFromFlag()
                     , Utils.initalToFlag()
                     , Constants.YANDEX_API
-                    , Constants.LANGUAGE_ENGLISH))
+                    , Constants.LANGUAGE_ENGLISH
+                    , arrData))
         }
     }
 

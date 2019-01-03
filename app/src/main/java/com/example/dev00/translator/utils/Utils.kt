@@ -23,6 +23,15 @@ import org.json.JSONException
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.*
+import android.app.Activity
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.support.v4.content.ContextCompat
+import android.view.MotionEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import com.example.dev00.translator.R
 
 
 class Utils {
@@ -199,5 +208,65 @@ class Utils {
             animator.start()
         }
 
+        @JvmStatic
+        fun hideKeyboardFrom(context: Context, view: View) {
+            val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
+        }
+
+        @JvmStatic
+        fun buttonEffect(button: View) {
+            button.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        v.background.setColorFilter(-0x1f0b8adf, PorterDuff.Mode.SRC_ATOP)
+                        v.invalidate()
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        v.background.clearColorFilter()
+                        v.invalidate()
+                    }
+                }
+                false
+            }
+        }
+
+        @JvmStatic
+        fun imageEffect(imageView: ImageView, context: Context){
+            imageView.setOnTouchListener(object : View.OnTouchListener {
+                override fun onTouch(v: View, m: MotionEvent): Boolean {
+                    when(m.action){
+                        MotionEvent.ACTION_DOWN -> {
+                            imageView.setBackgroundColor(ContextCompat.getColor(context, R.color.md_yellow_900))
+                            return false
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            imageView.setBackgroundColor(ContextCompat.getColor(context, R.color.md_yellow_800))
+                            return false
+                        }
+                    }
+                    return true
+                }
+            })
+        }
+
+        @JvmStatic
+        fun imageChangeEffect(imageView: ImageView,imageViewUp: Int, imageViewDown: Int, context: Context){
+            imageView.setOnTouchListener(object : View.OnTouchListener {
+                override fun onTouch(v: View, m: MotionEvent): Boolean {
+                    when(m.action){
+                        MotionEvent.ACTION_DOWN -> {
+                            imageView.setImageDrawable(ContextCompat.getDrawable(context, imageViewDown))
+                            return false
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            imageView.setImageDrawable(ContextCompat.getDrawable(context, imageViewUp))
+                            return false
+                        }
+                    }
+                    return true
+                }
+            })
+        }
     }
 }

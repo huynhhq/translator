@@ -27,12 +27,11 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:windowSoftInputMode="adjustPan"
             android:isScrollContainer="true"
-            android:label="@string/title_activity_main" />
-        <activity
-            android:name=".activities.SettingActivity"
-            />
+            android:label="@string/title_activity_main"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activities.SettingActivity" />
+        <activity android:name=".activities.AboutUsActivity"></activity>
     </application>
 
 </manifest>
