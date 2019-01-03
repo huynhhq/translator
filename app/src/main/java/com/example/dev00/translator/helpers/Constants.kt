@@ -40,7 +40,7 @@ class Constants {
 
         //Key API
         val YANDEX_KEY = "trnsl.1.1.20181206T043553Z.e749c47e3c3f08f3.3c2eceb80225b69ce6c4168bfcc526218842c890"
-        val GOOGLE_KEY = "AIzaSyABqqm2ABW32J13MpsjTC7Y--Nql6HWfQE"
+        val GOOGLE_KEY = ""
         val BASE_ADDRESS_YANDEX = "https://translate.yandex.net"
         val BASE_ADDRESS_GOOGLE = "https://translation.googleapis.com"
         //End kye API
