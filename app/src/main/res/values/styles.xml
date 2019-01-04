@@ -16,4 +16,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Theme.AppCompat.Dialog.AlertActivity" parent="Base.Theme.AppCompat.Dialog.Alert">
+        <item name="windowNoTitle">true</item>
+        <item name="android:colorBackground">@color/md_white_1000</item>
+    </style>
+
 </resources>

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.speech.RecognizerIntent
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
@@ -22,15 +23,17 @@ import com.example.dev00.translator.utils.Utils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_voice_speak.*
 import android.util.DisplayMetrics
+import com.example.dev00.translator.activities.VoiceAnimationActivity
 import com.example.dev00.translator.animator.FadeInDownAnimator
 import com.example.dev00.translator.helpers.Constants.Companion.SPEECH_RECOGNITION_CODE
+import com.example.dev00.translator.helpers.Credentials
 import com.example.dev00.translator.interfaces.IGoogle
 import com.example.dev00.translator.interfaces.IYandex
 import com.example.dev00.translator.models.*
 import com.example.dev00.translator.services.ServiceManager
 import com.example.dev00.translator.services.TTS
 import com.example.dev00.translator.utils.Utils.Companion.getStatusBarHeight
-import kotlinx.android.synthetic.main.fragment_type_text.*
+import com.nuance.speechkit.*
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -68,6 +71,19 @@ class VoiceSpeakFragment : Fragment() {
     private val TAG_TEXT_LEFT = "TEXT_LEFT"
 
     private val TAG_TEXT_RIGHT = "TEXT_RIGHT"
+
+    private lateinit var speechSession: Session
+    private var state = State.IDLE
+    private var recoTransaction: Transaction? = null
+    private var startEarcon: Audio? = null
+    private var stopEarcon: Audio? = null
+    private var errorEarcon: Audio? = null
+
+    private enum class State {
+        IDLE,
+        LISTENING,
+        PROCESSING
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -146,11 +162,13 @@ class VoiceSpeakFragment : Fragment() {
         try {
             startActivityForResult(intent, SPEECH_RECOGNITION_CODE)
         } catch (a: ActivityNotFoundException) {
-            Toast.makeText(context,
-                    Constants.SPEECH_RECOGNITION_NOT_SUPPORT,
-                    Toast.LENGTH_SHORT).show()
+            var intent = Intent()
+            intent.setClass(activity!!, VoiceAnimationActivity::class.java)
+            startActivity(intent)
         }
     }
+
+
 
     /**
      * Callback for speech recognition activity
@@ -198,18 +216,18 @@ class VoiceSpeakFragment : Fragment() {
                         }
 
                         appData_Singleton.getAppData()!!
-                                         .arrTranslateData
-                                         .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
-                                                        , textL
-                                                        , appData_Singleton.getAppData()!!.rightFlag
-                                                        , textR))
+                                .arrTranslateData
+                                .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
+                                        , textL
+                                        , appData_Singleton.getAppData()!!.rightFlag
+                                        , textR))
 
                         listSpeakTextViewAdapter.setItemList(appData_Singleton
-                                                            .getAppData()!!.arrTranslateData)
+                                .getAppData()!!.arrTranslateData)
                         listSpeakTextViewAdapter.notifyItemInserted(appData_Singleton.getAppData()!!
-                                                                    .arrTranslateData.size - 1)
+                                .arrTranslateData.size - 1)
                         activity!!.main_rcv.scrollToPosition(appData_Singleton.getAppData()!!
-                                                            .arrTranslateData.size - 1)
+                                .arrTranslateData.size - 1)
                         activity!!.main_rcv.itemAnimator?.apply {
                             addDuration = 350
                             removeDuration = 100
@@ -258,18 +276,18 @@ class VoiceSpeakFragment : Fragment() {
                         }
 
                         appData_Singleton.getAppData()!!
-                                         .arrTranslateData
-                                         .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
-                                                        , textL
-                                                        , appData_Singleton.getAppData()!!.rightFlag
-                                                        , textR))
+                                .arrTranslateData
+                                .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
+                                        , textL
+                                        , appData_Singleton.getAppData()!!.rightFlag
+                                        , textR))
 
                         listSpeakTextViewAdapter.setItemList(appData_Singleton.getAppData()!!
-                                                            .arrTranslateData)
+                                .arrTranslateData)
                         listSpeakTextViewAdapter.notifyItemInserted(appData_Singleton.getAppData()!!
-                                                                    .arrTranslateData.size - 1)
+                                .arrTranslateData.size - 1)
                         activity!!.main_rcv.scrollToPosition(appData_Singleton.getAppData()!!
-                                                            .arrTranslateData.size - 1)
+                                .arrTranslateData.size - 1)
                         activity!!.main_rcv.itemAnimator?.apply {
                             addDuration = 350
                             removeDuration = 100
@@ -342,6 +360,13 @@ class VoiceSpeakFragment : Fragment() {
 
         //Inital Service for Yandex
         translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
+        //End inital service for Yandex
+
+        speechSession = Session.Factory.session(activity!!, Credentials.SERVER_URI, Credentials.APP_KEY)
+
+        loadEarcons()
+
+        setState(State.IDLE)
     }
 
     private fun initalListener() {
@@ -463,4 +488,110 @@ class VoiceSpeakFragment : Fragment() {
             }
         }
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    override fun onPause() {
+        super.onPause()
+        when(state){
+            State.IDLE -> {
+
+            }
+            State.LISTENING -> {
+                stopRecording()
+            }
+            State.IDLE -> {
+                cancel()
+            }
+        }
+    }
+
+    /**
+     * Stop recording the user
+     */
+    private fun stopRecording() {
+        recoTransaction!!.stopRecording()
+    }
+
+    /**
+     * Cancel the Reco transaction.
+     * This will only cancel if we have not received a response from the server yet.
+     */
+    private fun cancel() {
+        recoTransaction!!.cancel()
+        setState(State.IDLE)
+    }
+
+    /**
+     * Set the state and update the button text.
+     */
+    private fun setState(newState: State) {
+        state = newState
+        when (newState) {
+
+        }
+    }
+
+    /**
+     * Start listening to the user and streaming their voice to the server.
+     */
+    private fun recognize() {
+        //Setup our Reco transaction options.
+        val options = Transaction.Options()
+        options.recognitionType = RecognitionType.DICTATION
+        options.detection = DetectionType.Short
+        options.language = Language("en_US")
+        options.setEarcons(startEarcon, stopEarcon, errorEarcon, null)
+
+        //Start listening
+        recoTransaction = speechSession.recognize(options, recoListener)
+    }
+
+    private val recoListener = object : Transaction.Listener() {
+        override fun onStartedRecording(transaction: Transaction?) {
+            Utils.createToast(activity!!,"\nonStartedRecording")
+
+            //We have started recording the users voice.
+            //We should update our state and start polling their volume.
+            setState(State.LISTENING)
+        }
+
+        override fun onFinishedRecording(transaction: Transaction?) {
+            Utils.createToast(activity!!,"\nonFinishedRecording")
+
+            //We have finished recording the users voice.
+            //We should update our state and stop polling their volume.
+            setState(State.PROCESSING)
+        }
+
+        override fun onRecognition(transaction: Transaction?, recognition: Recognition) {
+            Utils.createToast(activity!!,"\nonRecognition: " + recognition.text)
+
+            //We have received a transcription of the users voice from the server.
+        }
+
+        override fun onSuccess(transaction: Transaction?, s: String?) {
+            Utils.createToast(activity!!,"\nonSuccess")
+
+            //Notification of a successful transaction.
+            setState(State.IDLE)
+        }
+
+        override fun onError(transaction: Transaction?, s: String?, e: TransactionException) {
+            Utils.createToast(activity!!,"\nonError: " + e.message + ". " + s)
+
+            //Something went wrong. Check Configuration.java to ensure that your settings are correct.
+            //The user could also be offline, so be sure to handle this case appropriately.
+            //We will simply reset to the idle state.
+            setState(State.IDLE)
+        }
+    }
+
+    private fun loadEarcons() {
+        //Load all the earcons from disk
+        startEarcon = Audio(activity!!, R.raw.sk_start, Credentials.PCM_FORMAT)
+        stopEarcon = Audio(activity!!, R.raw.sk_stop, Credentials.PCM_FORMAT)
+        errorEarcon = Audio(activity!!, R.raw.sk_error, Credentials.PCM_FORMAT)
+    }
+
+
 }

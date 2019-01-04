@@ -8,6 +8,9 @@ buildscript {
         maven {
             url "https://dl.bintray.com/jetbrains/kotlin-native-dependencies"
         }
+        flatDir {
+            dirs 'aars'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'

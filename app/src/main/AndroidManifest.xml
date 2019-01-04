@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.dev00.translator">
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -31,7 +33,10 @@
             android:label="@string/title_activity_main"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activities.SettingActivity" />
-        <activity android:name=".activities.AboutUsActivity"></activity>
+        <activity android:name=".activities.AboutUsActivity" />
+        <activity
+            android:name=".activities.VoiceAnimationActivity"
+            android:theme="@style/Theme.AppCompat.Dialog.AlertActivity"/>
     </application>
 
 </manifest>
