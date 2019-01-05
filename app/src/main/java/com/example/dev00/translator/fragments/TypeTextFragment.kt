@@ -32,21 +32,14 @@ import retrofit2.Response
 class TypeTextFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
-
+    private var languageCodePair = ""
     private lateinit var appData_Singleton: AppData_Singleton
-
     private lateinit var listSpeakTextViewAdapter: ListSpeakTextViewAdapter
-
     private lateinit var translateService: Any
 
-    private var languageCodePair = ""
-
     private val TAG_TWO_VOICE = "TWO_VOICE"
-
     private var TEXT_DIRECTION = ""
-
     private val TAG_TEXT_LEFT = "TEXT_LEFT"
-
     private val TAG_TEXT_RIGHT = "TEXT_RIGHT"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +57,6 @@ class TypeTextFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initalListener()
-
         initalViewFragment()
     }
 

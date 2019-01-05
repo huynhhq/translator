@@ -33,26 +33,19 @@ import org.json.JSONObject
 class OneVoiceFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
-
-    private lateinit var adapterLeft: FlagListViewAdapter
-
-    private lateinit var adapterRight: FlagListViewAdapter
-
-    private lateinit var listSpeakTextViewAdapter: ListSpeakTextViewAdapter
-
     private lateinit var appData_Singleton: AppData_Singleton
-
+    private var languageCodePair = ""
     private lateinit var arrData: ArrayList<SpTextData>
 
-    private lateinit var objGoogleFlags: JSONArray
+    private lateinit var adapterLeft: FlagListViewAdapter
+    private lateinit var adapterRight: FlagListViewAdapter
+    private lateinit var listSpeakTextViewAdapter: ListSpeakTextViewAdapter
 
+    private lateinit var objGoogleFlags: JSONArray
     private lateinit var objYandexFlags: JSONArray
 
     private lateinit var listGoogleFlags: List<Flag>
-
     private lateinit var listYandexFlags: List<Flag>
-
-    private var languageCodePair = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +62,6 @@ class OneVoiceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initalListener()
-
         initalViewFragment()
     }
 

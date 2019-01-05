@@ -11,6 +11,7 @@
     android:tag="container">
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
@@ -38,6 +39,7 @@
             android:tag="control" />
 
         <TextView
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -45,7 +47,7 @@
             android:singleLine="true"
             android:tag="tips"
             android:textColor="#ff65c4ff"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
     </FrameLayout>
 
