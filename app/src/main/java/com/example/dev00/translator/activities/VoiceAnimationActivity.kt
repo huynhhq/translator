@@ -19,7 +19,7 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
     private val TAG = MainActivity::class.java.name
     private var mHandler: Handler? = null
     private var mMediaRecorder: MediaRecorder? = null
-    private var mIsRecording = false
+    private var mIsRecording = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +27,7 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
         setContentView(R.layout.activity_voice_animation)
         voice_view.setOnRecordListener(this)
         mHandler = Handler(Looper.getMainLooper())
+        onRecordStart()
     }
 
     override fun onRecordStart() {
@@ -36,12 +37,13 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
             mMediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
             mMediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB)
             mMediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            mMediaRecorder!!.setOutputFile("/dev/null");
             mMediaRecorder!!.prepare()
             mMediaRecorder!!.start()
             mIsRecording = true;
             mHandler!!.post(object : Runnable {
                 override fun run() {
-                    val radius = Math.log10(Math.max(1.toDouble(), (mMediaRecorder!!.getMaxAmplitude() - 500).toDouble())).toFloat() * ScreenUtils.dp2px(this@VoiceAnimationActivity, 20)
+                    val radius = Math.log10(Math.max(1.toDouble(), (mMediaRecorder!!.getMaxAmplitude() - 500).toDouble())).toFloat() * ScreenUtils.dp2px(this@VoiceAnimationActivity, 15)
                     voice_view.animateRadius(radius)
                     if (mIsRecording) {
                         mHandler!!.postDelayed(this, 50)
@@ -57,14 +59,14 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
 
     override fun onRecordFinish() {
         Log.d(TAG, "onRecordFinish");
-        mIsRecording = false;
-        mMediaRecorder!!.stop();
+        mIsRecording = false
+        mMediaRecorder!!.stop()
+        mHandler!!.removeCallbacksAndMessages(null)
     }
 
     override fun onDestroy() {
         if(mIsRecording){
-            mMediaRecorder!!.stop()
-            mIsRecording = false
+           onRecordFinish()
         }
         mMediaRecorder!!.release()
         super.onDestroy()

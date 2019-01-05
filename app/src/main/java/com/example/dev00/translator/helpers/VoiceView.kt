@@ -35,8 +35,8 @@ open class VoiceView: View{
     private var mAnimatorSet = AnimatorSet()
     private var mOnRecordListener: OnRecordListener? = null
 
-    private var mState = STATE_NORMAL
-    private var mIsRecording = false
+    private var mState = STATE_RECORDING
+    private var mIsRecording = true
     private var mMinRadius: Float = 0.toFloat()
     private var mMaxRadius: Float = 0.toFloat()
     private var mCurrentRadius: Float = 0.toFloat()
@@ -53,7 +53,7 @@ open class VoiceView: View{
         mPaint!!.isAntiAlias = true
         mPaint!!.color = Color.argb(255, 219, 219, 219)
 
-        mMinRadius = ScreenUtils.dp2px(context, 68) / 2f
+        mMinRadius = ScreenUtils.dp2px(context, 67) / 2f
         mCurrentRadius = mMinRadius
     }
 
@@ -74,13 +74,13 @@ open class VoiceView: View{
 
         when (mState) {
             STATE_NORMAL -> {
-                canvas.drawBitmap(mNormalBitmap, width / 2 - mMinRadius, height / 2 - mMinRadius, mPaint)
+                canvas.drawBitmap(mNormalBitmap, width / 2 - mMinRadius, height / 2 - mMinRadius + 2, mPaint)
             }
             STATE_PRESSED -> {
-                canvas.drawBitmap(mPressedBitmap, width / 2 - mMinRadius, height / 2 - mMinRadius, mPaint)
+                canvas.drawBitmap(mPressedBitmap, width / 2 - mMinRadius, height / 2 - mMinRadius + 2, mPaint)
             }
             STATE_RECORDING -> {
-                canvas.drawBitmap(mRecordingBitmap, width / 2 - mMinRadius, height / 2 - mMinRadius, mPaint)
+                canvas.drawBitmap(mRecordingBitmap, width / 2 - mMinRadius, height / 2 - mMinRadius + 2, mPaint)
             }
         }
     }
@@ -118,32 +118,34 @@ open class VoiceView: View{
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        when (event!!.getActionMasked()) {
-            MotionEvent.ACTION_DOWN -> {
-                Log.d(TAG, "ACTION_DOWN")
-                mState = STATE_PRESSED
-                invalidate()
-                return true
-            }
-            MotionEvent.ACTION_UP -> {
-                Log.d(TAG, "ACTION_UP")
-                if (mIsRecording) {
-                    mState = STATE_NORMAL
-                    if (mOnRecordListener != null) {
-                        mOnRecordListener!!.onRecordFinish()
-                    }
-                } else {
-                    mState = STATE_RECORDING
-                    if (mOnRecordListener != null) {
-                        mOnRecordListener!!.onRecordStart()
-                    }
-                }
-                mIsRecording = !mIsRecording
-                invalidate()
-                return true
-            }
-            else -> return super.onTouchEvent(event)
-        }
+//Todo: Setup listener for btn record
+//        when (event!!.getActionMasked()) {
+//            MotionEvent.ACTION_DOWN -> {
+//                Log.d(TAG, "ACTION_DOWN")
+//                mState = STATE_PRESSED
+//                invalidate()
+//                return true
+//            }
+//            MotionEvent.ACTION_UP -> {
+//                Log.d(TAG, "ACTION_UP")
+//                if (mIsRecording) {
+//                    mState = STATE_NORMAL
+//                    if (mOnRecordListener != null) {
+//                        mOnRecordListener!!.onRecordFinish()
+//                    }
+//                } else {
+//                    mState = STATE_RECORDING
+//                    if (mOnRecordListener != null) {
+//                        mOnRecordListener!!.onRecordStart()
+//                    }
+//                }
+//                mIsRecording = !mIsRecording
+//                invalidate()
+//                return true
+//            }
+//            else -> return super.onTouchEvent(event)
+//        }
+        return super.onTouchEvent(event)
     }
 
     fun setOnRecordListener(onRecordListener: OnRecordListener) {
