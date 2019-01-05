@@ -118,7 +118,7 @@ open class VoiceView: View{
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-//Todo: Setup listener for btn record
+//Todo: Setup listener for btn record kk
 //        when (event!!.getActionMasked()) {
 //            MotionEvent.ACTION_DOWN -> {
 //                Log.d(TAG, "ACTION_DOWN")
