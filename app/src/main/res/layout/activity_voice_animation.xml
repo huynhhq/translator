@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.VoiceAnimationActivity"
     android:layout_width="300dp"
     android:layout_height="220dp"
     android:layout_gravity="center"
@@ -27,11 +29,12 @@
         android:layout_weight="1"
         android:tag="waiting">
 
-        <View
+        <com.example.dev00.translator.helpers.VoiceView
+            android:id="@+id/voice_view"
             android:layout_width="150dp"
-            android:layout_height="150dp"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
             android:tag="control" />
 
         <TextView

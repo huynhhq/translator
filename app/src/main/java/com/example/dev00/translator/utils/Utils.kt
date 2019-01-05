@@ -24,6 +24,7 @@ import java.io.IOException
 import java.nio.charset.Charset
 import java.util.*
 import android.app.Activity
+import android.graphics.Matrix
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
@@ -267,6 +268,24 @@ class Utils {
                     return true
                 }
             })
+        }
+
+        @JvmStatic
+        fun getResizedBitmap(bm: Bitmap, newWidth: Int, newHeight: Int): Bitmap {
+            val width = bm.width
+            val height = bm.height
+            val scaleWidth = newWidth.toFloat() / width
+            val scaleHeight = newHeight.toFloat() / height
+            // CREATE A MATRIX FOR THE MANIPULATION
+            val matrix = Matrix()
+            // RESIZE THE BIT MAP
+            matrix.postScale(scaleWidth, scaleHeight)
+
+            // "RECREATE" THE NEW BITMAP
+            val resizedBitmap = Bitmap.createBitmap(
+                    bm, 0, 0, width, height, matrix, false)
+            bm.recycle()
+            return resizedBitmap
         }
     }
 }

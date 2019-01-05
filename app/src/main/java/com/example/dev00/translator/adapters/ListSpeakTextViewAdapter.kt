@@ -44,11 +44,6 @@ class ListSpeakTextViewAdapter(var items: ArrayList<SpTextData>
     fun setItemList(items: ArrayList<SpTextData>){
         this.items = items
     }
-
-
 }
 
-class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val tvSpeakTextLeft = view.tv_speak_text_left
-    val tvSpeakTextRight = view.tv_speak_text_right
-}
+class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {}
