@@ -181,7 +181,7 @@ class VoiceSpeakFragment : Fragment() {
         var target = ""
         var localeStr = ""
 
-        when (appData_Singleton.getAppData()!!.api) {
+        when (appData_Singleton.getAppData()!!.appSettingData!!.translatedApi) {
             Constants.YANDEX_API -> {
                 var call = (translateService as IYandex).translate(Constants.YANDEX_KEY, resultData, this.languageCodePair)
 
@@ -326,7 +326,7 @@ class VoiceSpeakFragment : Fragment() {
 
         appData_Singleton = AppData_Singleton.getInstance()
 
-        when (appData_Singleton.getAppData()!!.api) {
+        when (appData_Singleton.getAppData()!!.appSettingData!!.translatedApi) {
             Constants.YANDEX_API -> {
                 adapterLeft = FlagListViewAdapter(activity!!, listYandexFlags)
                 adapterLeft.setSelectedPosition(Utils.findIndexFlag(listYandexFlags, Utils.initalFromFlag()))
@@ -347,7 +347,7 @@ class VoiceSpeakFragment : Fragment() {
         listSpeakTextViewAdapter = ListSpeakTextViewAdapter(appData_Singleton.getAppData()!!.arrTranslateData, activity!!)
 
         //Inital Service for Yandex
-        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
+        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData!!.translatedApi)
         //End inital service for Yandex
 
     }
@@ -442,12 +442,12 @@ class VoiceSpeakFragment : Fragment() {
     }
 
     private fun changeListFlagAfterChange() {
-        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
+        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData!!.translatedApi)
 
         var lastPosLeft = adapterLeft.selected_position
         var lastPosRight = adapterRight.selected_position
 
-        when (appData_Singleton.getAppData()!!.api) {
+        when (appData_Singleton.getAppData()!!.appSettingData!!.translatedApi) {
             Constants.YANDEX_API -> {
                 adapterLeft = FlagListViewAdapter(activity!!, listYandexFlags)
                 adapterLeft.setSelectedPosition(lastPosLeft)

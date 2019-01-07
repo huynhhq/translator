@@ -15,12 +15,14 @@ class Constants {
         val JSON_FIELD_NAME = "name"
         val JSON_FIELD_IMAGE = "image"
         val JSON_FIELD_LANGUAGE_CODE = "language_code"
+        val JSON_FIELD_ASR_CODE = "asr_code"
         var LEFT_MODE = 0
         var RIGHT_MODE = 1
         val YANDEX_API = 0
         val GOOGLE_API = 1
         val LANGUAGE_VN = "VN"
-        val LANGUAGE_ENGLISH = "ENGLISH"
+        val LANGUAGE_EN = "ENGLISH"
+        val LANGUAGE_JP = "JAPANESE"
 
         //inital first languages
         val FROM_LANGUAGE_CODE_GG = "vi-VN"
@@ -28,22 +30,43 @@ class Constants {
         val FROM_LANGUAGE_CODE_YD = "vi"
         val TO_LANGUAGE_CODE_YD = "ja"
         val FROM_IMG_PATH = "flags/VNM.png"
+        val FROM_ASR_CODE = "vie-VNM"
         val TO_IMG_PATH = "flags/JPN.png"
         val FROM_NAME = "Vietnamese"
         val TO_NAME = "Japanese"
+        val TO_ASR_CODE = "jpn-JPN"
         //end inital first languages
 
         //Message
-        val SPEECH_RECOGNITION_NOT_SUPPORT="Sorry! Speech recognition is not supported in this device."
-        val MUST_IMPLEMENT_ONFRAGMENTINTERRACTIONLISTENER = " must implement OnFragmentInteractionListener"
-        val CHECK_YOUR_INTERNET = "Please check your internet and try again!!!"
+
         //end Message
 
         //Key API
         val YANDEX_KEY = "trnsl.1.1.20181206T043553Z.e749c47e3c3f08f3.3c2eceb80225b69ce6c4168bfcc526218842c890"
-        val GOOGLE_KEY = ""
+        val GOOGLE_KEY = "AIzaSyABqqm2ABW32J13MpsjTC7Y--Nql6HWfQE"
         val BASE_ADDRESS_YANDEX = "https://translate.yandex.net"
         val BASE_ADDRESS_GOOGLE = "https://translation.googleapis.com"
         //End kye API
+
+        //Language: Vietnamese
+        //Messages
+
+        //End messages
+
+        //end language: Vietnamese
+
+        //Language: English
+        //Messages
+        val SPEECH_RECOGNITION_NOT_SUPPORT_EN="Sorry! Speech recognition is not supported in this device."
+        val MUST_IMPLEMENT_ONFRAGMENTINTERRACTIONLISTENER = " must implement OnFragmentInteractionListener"
+        val CHECK_YOUR_INTERNET = "Please check your internet and try again!!!"
+        //End messages
+        //end language: English
+
+        //Language: Japanese
+        //Messages
+
+        //End messages
+        //end language: Japanese
     }
 }

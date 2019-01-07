@@ -166,7 +166,14 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
         val options = Transaction.Options()
         options.recognitionType = RecognitionType.DICTATION
         options.detection = DetectionType.Short
-        options.language = Language("en_US")
+        when(MODE_SPEAK){
+            0 -> {
+                options.language = Language(appData_Singleton.getAppData()!!.leftFlag!!.asrCode)
+            }
+            1 -> {
+                options.language = Language(appData_Singleton.getAppData()!!.rightFlag!!.asrCode)
+            }
+        }
         options.setEarcons(startEarcon, stopEarcon, errorEarcon, null)
 
         //Start listening

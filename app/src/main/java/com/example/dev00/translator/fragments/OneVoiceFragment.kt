@@ -122,7 +122,7 @@ class OneVoiceFragment : Fragment() {
             startActivityForResult(intent, Constants.SPEECH_RECOGNITION_CODE)
         } catch (a: ActivityNotFoundException) {
             Toast.makeText(context,
-                    Constants.SPEECH_RECOGNITION_NOT_SUPPORT,
+                    Constants.SPEECH_RECOGNITION_NOT_SUPPORT_EN,
                     Toast.LENGTH_SHORT).show()
         }
     }

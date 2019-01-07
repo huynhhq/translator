@@ -10,6 +10,13 @@
     <string name="api_support_en">Using API</string>
     <string name="language_support_en">Language</string>
     <string name="address">235-241 Cong Hoa St., Ward 13, Tan Binh Dist., Ho Chi Minh City, Viet Nam Tel: +84-28-3813 0515</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="setting_menu_en">Settings</string>
+    <string name="setting_menu_vn">Cài đặt</string>
+    <string name="setting_menu_jp">設定</string>
+
+    <string name="about_us_menu_en">About us</string>
+    <string name="about_us_menu_vn">Giới thiệu</string>
+    <string name="about_us_menu_jp">会社概要</string>
 </resources>

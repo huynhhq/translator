@@ -73,6 +73,7 @@
         android:background="@drawable/title_shape"/>
 
     <RadioGroup
+        android:id="@+id/rd_language_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >

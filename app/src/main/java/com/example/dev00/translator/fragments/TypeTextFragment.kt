@@ -94,7 +94,7 @@ class TypeTextFragment : Fragment() {
 
         listSpeakTextViewAdapter = ListSpeakTextViewAdapter(appData_Singleton.getAppData()!!.arrTranslateData, activity!!)
 
-        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
+        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData!!.translatedApi)
     }
 
     private fun initalListener() {
@@ -168,7 +168,7 @@ class TypeTextFragment : Fragment() {
         var target = ""
         var localeStr = ""
 
-        when (appData_Singleton.getAppData()!!.api) {
+        when (appData_Singleton.getAppData()!!.appSettingData!!.translatedApi) {
             Constants.YANDEX_API -> {
                 var call = (translateService as IYandex).translate(Constants.YANDEX_KEY, resultData, this.languageCodePair)
 
@@ -284,7 +284,7 @@ class TypeTextFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.api)
+        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData.translatedApi)
     }
 
     private fun setLanguageCodePair(firstLanguageCode: String, secondLanguageCode: String) {

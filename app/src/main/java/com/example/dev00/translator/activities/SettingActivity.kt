@@ -10,13 +10,17 @@ import android.support.v7.widget.AppCompatDrawableManager
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.example.dev00.translator.models.AppData_Singleton
+import com.example.dev00.translator.models.Prefs
 import com.example.dev00.translator.utils.Utils
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_setting.*
 
 
 class SettingActivity : AppCompatActivity() {
 
     private lateinit var appData_Singleton: AppData_Singleton
+    private var prefs: Prefs? = null
+    val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,20 +57,40 @@ class SettingActivity : AppCompatActivity() {
             val radio: RadioButton = findViewById(id)
             when(radio.text){
                 "Google API" -> {
-                    appData_Singleton.getAppData()!!.api = Constants.GOOGLE_API
-                     Utils.createToast(this, "Changed successfully.")
+                    appData_Singleton.getAppData()!!.appSettingData!!.translatedApi = Constants.GOOGLE_API
                 }
                 "Yandex API" -> {
-                    appData_Singleton.getAppData()!!.api = Constants.YANDEX_API
-                    Utils.createToast(this, "Changed successfully.")
+                    appData_Singleton.getAppData()!!.appSettingData!!.translatedApi = Constants.YANDEX_API
                 }
             }
+            var json = gson.toJson(appData_Singleton.getAppData()!!.appSettingData)
+            prefs!!.appSettingData = json
+            Utils.createToast(this, "Changed successfully.")
+        })
+
+        rd_language_group.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, id ->
+            val radio: RadioButton = findViewById(id)
+            when(radio.text){
+                "Vietnamese" -> {
+                    appData_Singleton.getAppData()!!.appSettingData!!.languageApp = Constants.LANGUAGE_VN
+                }
+                "English" -> {
+                    appData_Singleton.getAppData()!!.appSettingData!!.languageApp = Constants.LANGUAGE_EN
+                }
+                "Japanese" -> {
+                    appData_Singleton.getAppData()!!.appSettingData!!.languageApp = Constants.LANGUAGE_JP
+                }
+            }
+            var json = gson.toJson(appData_Singleton.getAppData()!!.appSettingData)
+            prefs!!.appSettingData = json
+            Utils.createToast(this, "Changed successfully.")
         })
     }
 
     private fun initalVar(){
         appData_Singleton = AppData_Singleton.getInstance()
-        when(appData_Singleton.getAppData()!!.api){
+        prefs = Prefs(this)
+        when(appData_Singleton.getAppData()!!.appSettingData!!.translatedApi){
             Constants.YANDEX_API -> {
                 set_rd_yd.isChecked = true
             }
@@ -74,6 +98,17 @@ class SettingActivity : AppCompatActivity() {
                 set_rd_gg.isChecked = true
             }
         }
-    }
 
+        when(appData_Singleton.getAppData()!!.appSettingData!!.languageApp){
+            Constants.LANGUAGE_VN -> {
+                set_rd_vn.isChecked = true
+            }
+            Constants.LANGUAGE_EN -> {
+                set_rd_el.isChecked = true
+            }
+            Constants.LANGUAGE_JP -> {
+                set_rd_jp.isChecked = true
+            }
+        }
+    }
 }

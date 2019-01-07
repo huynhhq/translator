@@ -3,6 +3,7 @@ package com.example.dev00.translator.utils
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -24,6 +25,8 @@ import java.io.IOException
 import java.nio.charset.Charset
 import java.util.*
 import android.app.Activity
+import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.graphics.Matrix
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
@@ -32,6 +35,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import com.example.dev00.translator.BuildConfig
 import com.example.dev00.translator.R
 
 
@@ -117,13 +121,13 @@ class Utils {
 
         @JvmStatic
         fun initalFromFlag(): Flag {
-            var flagResult = Flag(Constants.FROM_NAME, Constants.FROM_IMG_PATH, Constants.FROM_LANGUAGE_CODE_YD)
+            var flagResult = Flag(Constants.FROM_NAME, Constants.FROM_IMG_PATH, Constants.FROM_LANGUAGE_CODE_YD, Constants.FROM_ASR_CODE)
             return flagResult
         }
 
         @JvmStatic
         fun initalToFlag(): Flag {
-            var flagResult = Flag(Constants.TO_NAME, Constants.TO_IMG_PATH, Constants.TO_LANGUAGE_CODE_YD)
+            var flagResult = Flag(Constants.TO_NAME, Constants.TO_IMG_PATH, Constants.TO_LANGUAGE_CODE_YD, Constants.TO_ASR_CODE)
             return flagResult
         }
 
@@ -136,7 +140,8 @@ class Utils {
                     for (i in 0 until jsonArray.length()) {
                         list.add(Flag(jsonArray.getJSONObject(i).getString(Constants.JSON_FIELD_NAME)
                                 , jsonArray.getJSONObject(i).getString(Constants.JSON_FIELD_IMAGE)
-                                , jsonArray.getJSONObject(i).getString(Constants.JSON_FIELD_LANGUAGE_CODE)))
+                                , jsonArray.getJSONObject(i).getString(Constants.JSON_FIELD_LANGUAGE_CODE)
+                                , jsonArray.getJSONObject(i).getString(Constants.JSON_FIELD_ASR_CODE)))
                     }
                 }
             } catch (e: JSONException) {
@@ -287,5 +292,45 @@ class Utils {
             bm.recycle()
             return resizedBitmap
         }
+
+        @JvmStatic
+        private fun updateResources(context: Context, language: String) {
+            val locale = Locale(language)
+            Locale.setDefault(locale)
+            val config = Configuration()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                setSystemLocale(config, locale);
+            }else{
+                setSystemLocaleLegacy(config, locale);
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                context.createConfigurationContext(config);
+            } else {
+                context.resources.updateConfiguration(config, context.getResources().getDisplayMetrics());
+            }
+        }
+
+        @SuppressWarnings("deprecation")
+        private fun getSystemLocaleLegacy(config: Configuration): Locale{
+            return config.locale;
+        }
+
+        @TargetApi(Build.VERSION_CODES.N)
+        private fun getSystemLocale(config: Configuration): Locale {
+            return config.locales.get(0)
+        }
+
+        @SuppressWarnings("deprecation")
+        private fun setSystemLocaleLegacy(config: Configuration, locale: Locale) {
+            config.locale = locale
+        }
+
+        @TargetApi(Build.VERSION_CODES.N)
+        fun setSystemLocale(config: Configuration, locale: Locale) {
+            config.setLocale(locale)
+        }
+
     }
 }
