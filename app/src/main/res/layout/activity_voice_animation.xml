@@ -17,7 +17,6 @@
         android:layout_gravity="top"
         android:layout_margin="10dp"
         android:gravity="center_horizontal"
-        android:singleLine="true"
         android:tag="title"
         android:text="Vietnamese"
         android:textColor="@color/md_blue_grey_600"

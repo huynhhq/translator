@@ -15,12 +15,18 @@ import com.example.dev00.translator.utils.ScreenUtils
 import com.example.dev00.translator.utils.Utils
 import com.nuance.speechkit.*
 import kotlinx.android.synthetic.main.activity_voice_animation.*
+import android.app.Activity
+import android.content.Intent
+import com.example.dev00.translator.models.AppData_Singleton
+
 
 class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
 
     private val TAG = VoiceAnimationActivity::class.java.name
     private var mIsRecording = true
     private lateinit var context: Context
+    private lateinit var topRecognitionText: String
+    private lateinit var appData_Singleton: AppData_Singleton
 
     private lateinit var speechSession: Session
     private var state = State.IDLE
@@ -28,6 +34,8 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
     private var startEarcon: Audio? = null
     private var stopEarcon: Audio? = null
     private var errorEarcon: Audio? = null
+    private val TEXT_RESULT = "TEXT_RESULT"
+    private var MODE_SPEAK: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +43,23 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
 
         initalVar()
         initalListener()
-
-        recognize()
-        startAudioLevelPoll()
+        onRecordStart()
     }
 
     private fun initalVar() {
         context = this
         speechSession = Session.Factory.session(this, Credentials.SERVER_URI, Credentials.APP_KEY)
+        MODE_SPEAK = intent.getIntExtra("MODE_SPEAK", 0)
+        appData_Singleton = AppData_Singleton.getInstance()
+
+        when(MODE_SPEAK){
+            0 -> {
+                tv_title.text = appData_Singleton.getAppData()!!.leftFlag!!.name
+            }
+            1 -> {
+                tv_title.text = appData_Singleton.getAppData()!!.rightFlag!!.name
+            }
+        }
 
         loadEarcons()
         setState(State.IDLE)
@@ -55,6 +72,11 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
     override fun onRecordStart() {
         Log.d(TAG, "onRecordStart")
         try {
+            if(state.equals(State.ERROR)){
+                Utils.createToast(context, "Listening")
+                tv_title.text = "Vietnamese"
+            }
+            recognize()
             startAudioLevelPoll()
         } catch (e: Exception) {
             Toast.makeText(this, "Error!!!", Toast.LENGTH_SHORT).show()
@@ -64,7 +86,6 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
     }
 
     override fun onRecordFinish() {
-        Log.d(TAG, "onRecordFinish");
         mIsRecording = false
         stopAudioLevelPoll()
     }
@@ -130,6 +151,8 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
             }
             State.ERROR -> {
                 tv_title.text = "Đã có lỗi xảy ra. Vui lòng thử lại."
+                voice_view.visibility = View.VISIBLE
+                tv_status.text = ""
                 voice_view.change2btnOff()
             }
         }
@@ -152,35 +175,35 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
 
     private val recoListener = object : Transaction.Listener() {
         override fun onStartedRecording(transaction: Transaction?) {
-            Utils.createToast(context, "\nonStartedRecording")
-
+//            Utils.createToast(context, "\nonStartedRecording")
             //We have started recording the users voice.
             //We should update our state and start polling their volume.
             setState(State.LISTENING)
         }
 
         override fun onFinishedRecording(transaction: Transaction?) {
-            Utils.createToast(context, "\nonFinishedRecording")
+//            Utils.createToast(context, "\nonFinishedRecording")
             //We have finished recording the users voice.
             //We should update our state and stop polling their volume.
+            onRecordFinish()
             setState(State.PROCESSING)
         }
 
         override fun onRecognition(transaction: Transaction?, recognition: Recognition) {
-            Utils.createToast(context, "\nonRecognition: " + recognition.text)
-
+//            Utils.createToast(context, "\nonRecognition: " + recognition.text)
+            topRecognitionText = recognition.text
             //We have received a transcription of the users voice from the server.
         }
 
         override fun onSuccess(transaction: Transaction?, s: String?) {
-            Utils.createToast(context, "\nonSuccess")
-
+//            Utils.createToast(context, "\nonSuccess")
             //Notification of a successful transaction.
             setState(State.DONE)
+            returnData(topRecognitionText)
         }
 
         override fun onError(transaction: Transaction?, s: String?, e: TransactionException) {
-            Utils.createToast(context, "\nonError: " + e.message + ". " + s)
+//            Utils.createToast(context, "\nonError: " + e.message + ". " + s)
             //Something went wrong. Check Configuration.java to ensure that your settings are correct.
             //The user could also be offline, so be sure to handle this case appropriately.
             //We will simply reset to the idle state.
@@ -223,5 +246,12 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
      */
     private fun stopAudioLevelPoll() {
         handler.removeCallbacks(audioPoller)
+    }
+
+    private fun returnData(translatedText: String) {
+        val returnIntent = Intent()
+        returnIntent.putExtra(TEXT_RESULT, translatedText)
+        setResult(Activity.RESULT_OK, returnIntent)
+        finish()
     }
 }

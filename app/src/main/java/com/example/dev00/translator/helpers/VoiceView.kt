@@ -118,43 +118,29 @@ open class VoiceView: View{
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-//Todo: Setup listener for btn record
-//        when (event!!.getActionMasked()) {
-//            MotionEvent.ACTION_DOWN -> {
-//                Log.d(TAG, "ACTION_DOWN")
-//                mState = STATE_PRESSED
-//                invalidate()
-//                return true
-//            }
-//            MotionEvent.ACTION_UP -> {
-//                Log.d(TAG, "ACTION_UP")
-//                if (mIsRecording) {
-//                    mState = STATE_NORMAL
-//                    if (mOnRecordListener != null) {
-//                        mOnRecordListener!!.onRecordFinish()
-//                    }
-//                } else {
-//                    mState = STATE_RECORDING
-//                    if (mOnRecordListener != null) {
-//                        mOnRecordListener!!.onRecordStart()
-//                    }
-//                }
-//                mIsRecording = !mIsRecording
-//                invalidate()
-//                return true
-//            }
-//            else -> return super.onTouchEvent(event)
-//        }
-        return super.onTouchEvent(event)
+        when (event!!.getActionMasked()) {
+            MotionEvent.ACTION_DOWN -> {
+                if(!mIsRecording){
+                    Log.d(TAG, "ACTION_DOWN")
+                    mState = STATE_RECORDING
+                    mOnRecordListener!!.onRecordStart()
+                    invalidate()
+                }
+                return true
+            }
+            else -> return super.onTouchEvent(event)
+        }
     }
 
 
     fun change2btnOff(){
+        mIsRecording = false
         mState = STATE_NORMAL
         invalidate()
     }
 
     fun change2btnPressed(){
+        mIsRecording = false
         mState = STATE_PRESSED
         invalidate()
     }

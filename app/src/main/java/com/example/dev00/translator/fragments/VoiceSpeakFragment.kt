@@ -61,6 +61,8 @@ class VoiceSpeakFragment : Fragment() {
     private val TAG_TWO_VOICE = "TWO_VOICE"
     private val TAG_TEXT_LEFT = "TEXT_LEFT"
     private val TAG_TEXT_RIGHT = "TEXT_RIGHT"
+    private val REQUEST_CODE = 2
+    private val TEXT_RESULT = "TEXT_RESULT"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -140,7 +142,8 @@ class VoiceSpeakFragment : Fragment() {
         } catch (a: ActivityNotFoundException) {
             var intent = Intent()
             intent.setClass(activity!!, VoiceAnimationActivity::class.java)
-            startActivity(intent)
+            intent.putExtra("MODE_SPEAK", MODE_SPEAK)
+            startActivityForResult(intent, REQUEST_CODE)
         }
     }
 
@@ -155,6 +158,17 @@ class VoiceSpeakFragment : Fragment() {
                     val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                     var text = result[0]
                     processRecognitionData(text)
+                }
+            }
+            REQUEST_CODE -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        var text = data!!.getStringExtra(TEXT_RESULT)
+                        processRecognitionData(text)
+                    }
+                    Activity.RESULT_CANCELED -> {
+
+                    }
                 }
             }
         }
