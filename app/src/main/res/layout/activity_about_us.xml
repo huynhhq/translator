@@ -19,6 +19,7 @@
         app:titleTextColor="#fff" />
 
     <TextView
+        android:id="@+id/tv_about_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -45,6 +46,7 @@
                 android:weightSum="7">
 
                 <TextView
+                    android:id="@+id/tv_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -73,6 +75,7 @@
                 android:weightSum="7">
 
                 <TextView
+                    android:id="@+id/tv_director"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -83,6 +86,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_mr"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
@@ -100,6 +104,7 @@
                 android:weightSum="7">
 
                 <TextView
+                    android:id="@+id/tv_ho"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -110,10 +115,11 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
-                    android:text="@string/address"
+                    android:text="@string/address_en"
                     android:textColor="@color/md_white_1000"
                     android:textSize="18dp" />
 
@@ -127,6 +133,7 @@
                 android:weightSum="7">
 
                 <TextView
+                    android:id="@+id/tv_capital"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -137,6 +144,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_invest"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
@@ -154,6 +162,7 @@
                 android:weightSum="7">
 
                 <TextView
+                    android:id="@+id/tv_mp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"

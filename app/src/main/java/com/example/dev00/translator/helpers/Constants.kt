@@ -7,8 +7,6 @@ class Constants {
         val JSON_TYPE_GOOGLE_FLAGS = "google_flags"
         val JSON_TYPE_YANDEX_FLAGS = "yandex_flags"
         val TITLE_TOOLBAR = "Voice Translator"
-        val TITLE_SETTING = "Setting"
-        val TITLE_ABOUT = "About us"
         val LEFT_LANGUAGE: Int = 0
         val RIGHT_LANGUAGE: Int = 1
         val SPEECH_RECOGNITION_CODE = 1
@@ -25,8 +23,6 @@ class Constants {
         val LANGUAGE_JP = "JAPANESE"
 
         //inital first languages
-        val FROM_LANGUAGE_CODE_GG = "vi-VN"
-        val TO_LANGUAGE_CODE_GG = "ja-JP"
         val FROM_LANGUAGE_CODE_YD = "vi"
         val TO_LANGUAGE_CODE_YD = "ja"
         val FROM_IMG_PATH = "flags/VNM.png"
@@ -37,36 +33,8 @@ class Constants {
         val TO_ASR_CODE = "jpn-JPN"
         //end inital first languages
 
-        //Message
-
-        //end Message
-
-        //Key API
-        val YANDEX_KEY = "trnsl.1.1.20181206T043553Z.e749c47e3c3f08f3.3c2eceb80225b69ce6c4168bfcc526218842c890"
-        val GOOGLE_KEY = "AIzaSyABqqm2ABW32J13MpsjTC7Y--Nql6HWfQE"
-        val BASE_ADDRESS_YANDEX = "https://translate.yandex.net"
-        val BASE_ADDRESS_GOOGLE = "https://translation.googleapis.com"
-        //End kye API
-
-        //Language: Vietnamese
-        //Messages
-
-        //End messages
-
-        //end language: Vietnamese
-
-        //Language: English
-        //Messages
-        val SPEECH_RECOGNITION_NOT_SUPPORT_EN="Sorry! Speech recognition is not supported in this device."
         val MUST_IMPLEMENT_ONFRAGMENTINTERRACTIONLISTENER = " must implement OnFragmentInteractionListener"
         val CHECK_YOUR_INTERNET = "Please check your internet and try again!!!"
-        //End messages
-        //end language: English
 
-        //Language: Japanese
-        //Messages
-
-        //End messages
-        //end language: Japanese
     }
 }

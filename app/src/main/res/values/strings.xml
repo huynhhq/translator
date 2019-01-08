@@ -1,22 +1,63 @@
 <resources>
     <string name="app_name">Translator</string>
     <string name="title_activity_main">Hayabusa Translator</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="text">Text</string>
-    <string name="api_support_vn">Sử dụng API</string>
-    <string name="language_support_vn">Ngôn ngữ</string>
-    <string name="api_support_en">Using API</string>
-    <string name="language_support_en">Language</string>
-    <string name="address">235-241 Cong Hoa St., Ward 13, Tan Binh Dist., Ho Chi Minh City, Viet Nam Tel: +84-28-3813 0515</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="setting_menu_en">Settings</string>
-    <string name="setting_menu_vn">Cài đặt</string>
+    <!--Japanese-->
     <string name="setting_menu_jp">設定</string>
-
-    <string name="about_us_menu_en">About us</string>
-    <string name="about_us_menu_vn">Giới thiệu</string>
     <string name="about_us_menu_jp">会社概要</string>
+    <string name="setting_api_title_jp">APIを使う</string>
+    <string name="setting_language_title_jp">言語</string>
+    <string name="address_jp">235-241 Cong Hoa 通り., 13区 , Tan Binh 遠い., Ho Chi Minh City, Viet Nam 電話: +84-28-3813 0515</string>
+    <string name="about_jp">約</string>
+    <string name="name_jp">名</string>
+    <string name="director_jp">部長</string>
+    <string name="head_office_jp">本社</string>
+    <string name="capital_jp">資本</string>
+    <string name="main_partner_jp">メインパートナー</string>
+    <string name="toolbar_setting_jp">設定</string>
+    <string name="toolbar_about_us_jp">会社概要</string>
+    <string name="press_back_jp">もう一度押すと終了します</string>
+    <string name="mr_jp">PhanThanh Nhan 氏</string>
+    <string name="invest_jp">100％外国投資 (HAYABUSA Inc., JAPAN)</string>
+    <string name="change_setting_msg_jp">正常に変更されました。</string>
+    <!--End Japanese-->
+
+    <!--English-->
+    <string name="setting_menu_en">Settings</string>
+    <string name="about_us_menu_en">About us</string>
+    <string name="setting_api_title_en">Using API</string>
+    <string name="setting_language_title_en">Language</string>
+    <string name="address_en">235-241 Cong Hoa St., Ward 13, Tan Binh Dist., Ho Chi Minh City, Viet Nam Tel: +84-28-3813 0515</string>
+    <string name="about_en">About</string>
+    <string name="name_en">Name</string>
+    <string name="director_en">Director</string>
+    <string name="head_office_en">Head Office</string>
+    <string name="capital_en">Capital</string>
+    <string name="main_partner_en">Main Partner</string>
+    <string name="toolbar_setting_en">Setting</string>
+    <string name="toolbar_about_us_en">About us</string>
+    <string name="press_back_en">Press back again to exit</string>
+    <string name="mr_en">Mr. PhanThanh Nhan</string>
+    <string name="invest_en">100% Foreign Investment (HAYABUSA Inc., JAPAN)</string>
+    <string name="change_setting_msg_en">Changed successfully.</string>
+    <!--End English-->
+
+    <!--Vietnamese-->
+    <string name="about_us_menu_vn">Giới thiệu</string>
+    <string name="setting_menu_vn">Cài đặt</string>
+    <string name="setting_api_title_vn">Sử dụng API</string>
+    <string name="setting_language_title_vn">Ngôn ngữ</string>
+    <string name="address_vn">235-241 Cộng Hòa, Quận 13, Quận Tân Bình, Thành phố Hồ Chí Minh, Việt Nam Điện thoại: + 84-28-3813 0515</string>
+    <string name="about_vn">Giới thiệu</string>
+    <string name="name_vn">Tên</string>
+    <string name="director_vn">Giám đốc</string>
+    <string name="head_office_vn">Trụ sở chính</string>
+    <string name="capital_vn">Nguồn vốn</string>
+    <string name="main_partner_vn">Đối tác chính</string>
+    <string name="toolbar_setting_vn">Cài đặt</string>
+    <string name="toolbar_about_us_vn">Giới thiệu</string>
+    <string name="press_back_vn">Nhấn Back thêm lần nữa để thoát</string>
+    <string name="mr_vn">Ông Phan Thành Nhân</string>
+    <string name="invest_vn">100% đầu tư nước ngoài (HAYABUSA Inc., NHẬT BẢN)</string>
+    <string name="change_setting_msg_vn">Đã thay đổi thành công.</string>
+    <!--End Vietnamese-->
 </resources>

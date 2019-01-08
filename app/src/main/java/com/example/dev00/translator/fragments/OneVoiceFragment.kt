@@ -18,7 +18,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ListView
-import android.widget.Toast
 import com.example.dev00.translator.R
 import com.example.dev00.translator.adapters.FlagListViewAdapter
 import com.example.dev00.translator.adapters.ListSpeakTextViewAdapter
@@ -121,9 +120,7 @@ class OneVoiceFragment : Fragment() {
         try {
             startActivityForResult(intent, Constants.SPEECH_RECOGNITION_CODE)
         } catch (a: ActivityNotFoundException) {
-            Toast.makeText(context,
-                    Constants.SPEECH_RECOGNITION_NOT_SUPPORT_EN,
-                    Toast.LENGTH_SHORT).show()
+
         }
     }
 
@@ -167,7 +164,7 @@ class OneVoiceFragment : Fragment() {
     }
 
     fun changeFlag(flag: Flag, img: ImageView, context: Context) {
-        img!!.setImageBitmap(Utils.getBitMapFromAssets(context, flag.image))
+        img.setImageBitmap(Utils.getBitMapFromAssets(context, flag.image))
         img.layoutParams.height = resources.getDimension(R.dimen.height_flag).toInt();
         img.layoutParams.width = resources.getDimension(R.dimen.width_flag).toInt();
     }
@@ -224,8 +221,8 @@ class OneVoiceFragment : Fragment() {
 
     private fun initalViewFragment() {
 
-        changeFlag(appData_Singleton!!.getAppData()!!.leftFlag!!, one_img_left, activity!!)
-        changeFlag(appData_Singleton!!.getAppData()!!.rightFlag!!, one_img_right, activity!!)
+        changeFlag(appData_Singleton.getAppData()!!.leftFlag!!, one_img_left, activity!!)
+        changeFlag(appData_Singleton.getAppData()!!.rightFlag!!, one_img_right, activity!!)
 
         activity!!.main_rcv.layoutManager = LinearLayoutManager(activity!!)
         activity!!.main_rcv.setHasFixedSize(true)

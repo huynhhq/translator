@@ -14,6 +14,7 @@ import com.example.dev00.translator.R
 import com.example.dev00.translator.adapters.ListSpeakTextViewAdapter
 import com.example.dev00.translator.animator.FadeInDownAnimator
 import com.example.dev00.translator.helpers.Constants
+import com.example.dev00.translator.helpers.Credentials
 import com.example.dev00.translator.interfaces.IGoogle
 import com.example.dev00.translator.interfaces.IYandex
 import com.example.dev00.translator.models.AppData_Singleton
@@ -94,7 +95,7 @@ class TypeTextFragment : Fragment() {
 
         listSpeakTextViewAdapter = ListSpeakTextViewAdapter(appData_Singleton.getAppData()!!.arrTranslateData, activity!!)
 
-        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData!!.translatedApi)
+        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData.translatedApi)
     }
 
     private fun initalListener() {
@@ -102,6 +103,7 @@ class TypeTextFragment : Fragment() {
         Utils.imageEffect(iv_done, activity!!)
 
         iv_back_voice.setOnClickListener {
+            Utils.hideKeyboard(activity!!)
             var f = activity!!.supportFragmentManager!!.findFragmentByTag(TEXT_DIRECTION)
             when (TEXT_DIRECTION) {
                 TAG_TEXT_RIGHT -> {
@@ -168,13 +170,13 @@ class TypeTextFragment : Fragment() {
         var target = ""
         var localeStr = ""
 
-        when (appData_Singleton.getAppData()!!.appSettingData!!.translatedApi) {
+        when (appData_Singleton.getAppData()!!.appSettingData.translatedApi) {
             Constants.YANDEX_API -> {
-                var call = (translateService as IYandex).translate(Constants.YANDEX_KEY, resultData, this.languageCodePair)
+                var call = (translateService as IYandex).translate(Credentials.YANDEX_KEY, resultData, this.languageCodePair)
 
                 call.enqueue(object : Callback<YandexResponse> {
                     override fun onResponse(call: Call<YandexResponse>, response: Response<YandexResponse>) {
-                        var translationResult = response.body().text[0]!!
+                        var translationResult = response.body().text[0]
 
                         when (TEXT_DIRECTION) {
                             TAG_TEXT_LEFT -> {
@@ -229,7 +231,7 @@ class TypeTextFragment : Fragment() {
                         target = appData_Singleton.getAppData()!!.rightFlag!!.languageCode
                     }
                 }
-                var call = (translateService as IGoogle).translate(Constants.GOOGLE_KEY, resultData, target)
+                var call = (translateService as IGoogle).translate(Credentials.GOOGLE_KEY, resultData, target)
 
                 call.enqueue(object : Callback<GoogleResponse> {
 

@@ -20,9 +20,10 @@
         />
 
     <TextView
+        android:id="@+id/tv_title_u_api"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/api_support_en"
+        android:text="@string/setting_api_title_en"
         android:textStyle="bold"
         android:paddingLeft="@dimen/margin_14"
         android:textColor="@color/md_white_1000"
@@ -64,9 +65,10 @@
     </RadioGroup>
 
     <TextView
+        android:id="@+id/tv_title_u_language"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/language_support_en"
+        android:text="@string/setting_api_title_en"
         android:textStyle="bold"
         android:paddingLeft="@dimen/margin_14"
         android:textColor="@color/md_white_1000"

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.speech.RecognizerIntent
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
@@ -14,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.widget.ImageView
 import android.widget.ListView
-import android.widget.Toast
 import com.example.dev00.translator.R
 import com.example.dev00.translator.adapters.FlagListViewAdapter
 import com.example.dev00.translator.adapters.ListSpeakTextViewAdapter
@@ -33,7 +31,6 @@ import com.example.dev00.translator.models.*
 import com.example.dev00.translator.services.ServiceManager
 import com.example.dev00.translator.services.TTS
 import com.example.dev00.translator.utils.Utils.Companion.getStatusBarHeight
-import com.nuance.speechkit.*
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -120,7 +117,7 @@ class VoiceSpeakFragment : Fragment() {
 
 
     fun changeFlag(flag: Flag, img: ImageView, context: Context) {
-        img!!.setImageBitmap(Utils.getBitMapFromAssets(context, flag.image))
+        img.setImageBitmap(Utils.getBitMapFromAssets(context, flag.image))
         img.layoutParams.height = resources.getDimension(R.dimen.height_flag).toInt();
         img.layoutParams.width = resources.getDimension(R.dimen.width_flag).toInt();
     }
@@ -181,13 +178,13 @@ class VoiceSpeakFragment : Fragment() {
         var target = ""
         var localeStr = ""
 
-        when (appData_Singleton.getAppData()!!.appSettingData!!.translatedApi) {
+        when (appData_Singleton.getAppData()!!.appSettingData.translatedApi) {
             Constants.YANDEX_API -> {
-                var call = (translateService as IYandex).translate(Constants.YANDEX_KEY, resultData, this.languageCodePair)
+                var call = (translateService as IYandex).translate(Credentials.YANDEX_KEY, resultData, this.languageCodePair)
 
                 call.enqueue(object : Callback<YandexResponse> {
                     override fun onResponse(call: Call<YandexResponse>, response: Response<YandexResponse>) {
-                        var translationResult = response.body().text[0]!!
+                        var translationResult = response.body().text[0]
 
                         when (MODE_SPEAK) {
                             0 -> {
@@ -242,7 +239,7 @@ class VoiceSpeakFragment : Fragment() {
                         target = appData_Singleton.getAppData()!!.leftFlag!!.languageCode
                     }
                 }
-                var call = (translateService as IGoogle).translate(Constants.GOOGLE_KEY, resultData, target)
+                var call = (translateService as IGoogle).translate(Credentials.GOOGLE_KEY, resultData, target)
 
                 call.enqueue(object : Callback<GoogleResponse> {
 
@@ -326,7 +323,7 @@ class VoiceSpeakFragment : Fragment() {
 
         appData_Singleton = AppData_Singleton.getInstance()
 
-        when (appData_Singleton.getAppData()!!.appSettingData!!.translatedApi) {
+        when (appData_Singleton.getAppData()!!.appSettingData.translatedApi) {
             Constants.YANDEX_API -> {
                 adapterLeft = FlagListViewAdapter(activity!!, listYandexFlags)
                 adapterLeft.setSelectedPosition(Utils.findIndexFlag(listYandexFlags, Utils.initalFromFlag()))
@@ -347,7 +344,7 @@ class VoiceSpeakFragment : Fragment() {
         listSpeakTextViewAdapter = ListSpeakTextViewAdapter(appData_Singleton.getAppData()!!.arrTranslateData, activity!!)
 
         //Inital Service for Yandex
-        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData!!.translatedApi)
+        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData.translatedApi)
         //End inital service for Yandex
 
     }
@@ -378,7 +375,7 @@ class VoiceSpeakFragment : Fragment() {
 
             this.MODE_SPEAK = Constants.LEFT_MODE
 
-            startSpeechToText(activity!!, language!!.name, language!!.languageCode)
+            startSpeechToText(activity!!, language!!.name, language.languageCode)
         })
 
         img_voice_right.setOnClickListener({
@@ -389,7 +386,7 @@ class VoiceSpeakFragment : Fragment() {
 
             this.MODE_SPEAK = Constants.RIGHT_MODE
 
-            startSpeechToText(activity!!, language!!.name, language!!.languageCode)
+            startSpeechToText(activity!!, language!!.name, language.languageCode)
         })
 
         iv_keyboard_left.setOnClickListener {
@@ -415,8 +412,8 @@ class VoiceSpeakFragment : Fragment() {
 
     private fun initalViewFragment() {
 
-        changeFlag(appData_Singleton!!.getAppData()!!.leftFlag!!, img_left, activity!!)
-        changeFlag(appData_Singleton!!.getAppData()!!.rightFlag!!, img_right, activity!!)
+        changeFlag(appData_Singleton.getAppData()!!.leftFlag!!, img_left, activity!!)
+        changeFlag(appData_Singleton.getAppData()!!.rightFlag!!, img_right, activity!!)
 
         activity!!.main_rcv.layoutManager = LinearLayoutManager(activity!!)
         activity!!.main_rcv.setHasFixedSize(true)
@@ -442,12 +439,12 @@ class VoiceSpeakFragment : Fragment() {
     }
 
     private fun changeListFlagAfterChange() {
-        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData!!.translatedApi)
+        translateService = ServiceManager.getService(appData_Singleton.getAppData()!!.appSettingData.translatedApi)
 
         var lastPosLeft = adapterLeft.selected_position
         var lastPosRight = adapterRight.selected_position
 
-        when (appData_Singleton.getAppData()!!.appSettingData!!.translatedApi) {
+        when (appData_Singleton.getAppData()!!.appSettingData.translatedApi) {
             Constants.YANDEX_API -> {
                 adapterLeft = FlagListViewAdapter(activity!!, listYandexFlags)
                 adapterLeft.setSelectedPosition(lastPosLeft)

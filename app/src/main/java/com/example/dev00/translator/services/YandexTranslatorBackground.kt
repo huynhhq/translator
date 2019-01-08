@@ -3,13 +3,11 @@ package com.example.dev00.translator.services
 import android.content.Context
 import android.os.AsyncTask
 import android.util.Log
-import com.example.dev00.translator.helpers.Constants
-import com.example.dev00.translator.utils.Utils
+import com.example.dev00.translator.helpers.Credentials
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
-import java.net.MalformedURLException
 import java.net.URL
 import java.net.URLEncoder
 import java.nio.charset.Charset
@@ -26,7 +24,7 @@ class YandexTranslatorBackground(val context: Context) : AsyncTask<String, Void,
             var jsonString: String? = null
             val encodeText = URLEncoder.encode(textToBeTranslated, StandardCharsets.UTF_8.name())
             //Set up the translation call URL
-            val yandexKey = Constants.YANDEX_KEY
+            val yandexKey = Credentials.YANDEX_KEY
             val yandexUrl = ("https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + yandexKey
                     + "&text=" + encodeText + "&lang=" + languagePair)
             val yandexTranslateURL = URL(yandexUrl)

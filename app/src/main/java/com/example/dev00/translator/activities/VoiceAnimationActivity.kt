@@ -19,7 +19,6 @@ import android.app.Activity
 import android.content.Intent
 import com.example.dev00.translator.models.AppData_Singleton
 
-
 class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
 
     private val TAG = VoiceAnimationActivity::class.java.name
@@ -101,12 +100,12 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
         super.onPause()
         when (state) {
             State.IDLE -> {
-
+                //do nothing
             }
             State.LISTENING -> {
                 stopRecording()
             }
-            State.IDLE -> {
+            State.PROCESSING -> {
                 cancel()
             }
         }

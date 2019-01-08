@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
                                     .setCustomAnimations(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left)
                                     .replace(R.id.bottom_layout, TypeTextFragment.newInstance(TAG_TEXT_RIGHT), TAG_TEXT_RIGHT)
                                     .commit()
-                            supportFragmentManager.beginTransaction().remove(f!!).commit()
+                            supportFragmentManager.beginTransaction().remove(f).commit()
 
                         }
                     }
@@ -187,7 +187,7 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
                                     .setCustomAnimations(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right)
                                     .replace(R.id.bottom_layout, TypeTextFragment.newInstance(TAG_TEXT_LEFT), TAG_TEXT_LEFT)
                                     .commit()
-                            supportFragmentManager.beginTransaction().remove(f!!).commit()
+                            supportFragmentManager.beginTransaction().remove(f).commit()
 
                         }
                     }
@@ -251,13 +251,23 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
             System.exit(0)
         } else {
             doubleBackToExitPressedOnce = true
-            Utils.createToast(this@MainActivity, "Nhấn Back thêm lần nữa để thoát")
+            when(appData_Singleton.getAppData()!!.appSettingData.languageApp){
+                Constants.LANGUAGE_JP -> {
+                    Utils.createToast(this@MainActivity, this.resources.getString(R.string.press_back_jp))
+                }
+                Constants.LANGUAGE_VN -> {
+                    Utils.createToast(this@MainActivity, this.resources.getString(R.string.press_back_vn))
+                }
+                Constants.LANGUAGE_EN -> {
+                    Utils.createToast(this@MainActivity, this.resources.getString(R.string.press_back_en))
+                }
+            }
             Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
         }
     }
 
     private fun prepareMenuView(menu: Menu) {
-        when (appData_Singleton.getAppData()!!.appSettingData!!.languageApp) {
+        when (appData_Singleton.getAppData()!!.appSettingData.languageApp) {
             Constants.LANGUAGE_EN -> {
                 var settingMenu = menu.findItem(action_settings)
                 var aboutUsMenu = menu.findItem(action_about_us)
@@ -281,7 +291,7 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         this.menu = menu!!
-        prepareMenuView(menu!!)
+        prepareMenuView(menu)
         return super.onPrepareOptionsMenu(menu)
     }
 

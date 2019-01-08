@@ -1,8 +1,6 @@
 package com.example.dev00.translator.services
 
-import android.app.Activity
 import android.content.Context
-import android.content.res.Resources
 import android.os.Build
 import android.speech.tts.TextToSpeech
 import com.example.dev00.translator.utils.Utils
