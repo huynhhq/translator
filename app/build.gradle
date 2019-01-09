@@ -34,6 +34,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.h2database:h2:1.4.197'
     implementation 'com.nuance:speechkit:2.1+@aar'
+    implementation 'org.greenrobot:eventbus:3.0.0'
     //    implementation 'org.json:json:20180813'
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'

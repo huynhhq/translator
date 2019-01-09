@@ -17,6 +17,7 @@ import com.nuance.speechkit.*
 import kotlinx.android.synthetic.main.activity_voice_animation.*
 import android.app.Activity
 import android.content.Intent
+import com.example.dev00.translator.helpers.Constants
 import com.example.dev00.translator.models.AppData_Singleton
 
 class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
@@ -26,6 +27,9 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
     private lateinit var context: Context
     private lateinit var topRecognitionText: String
     private lateinit var appData_Singleton: AppData_Singleton
+    private lateinit var msgProcessing: String
+    private lateinit var msgError: String
+    private lateinit var msgListening: String
 
     private lateinit var speechSession: Session
     private var state = State.IDLE
@@ -137,11 +141,11 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
                 //dothing
             }
             State.LISTENING -> {
-                Utils.createToast(context, "Listening")
+                Utils.createToast(context, msgListening)
             }
             State.PROCESSING -> {
                 voice_view.visibility = View.INVISIBLE
-                tv_status.text = "Processing..."
+                tv_status.text = msgProcessing
             }
             State.DONE -> {
                 voice_view.visibility = View.VISIBLE
@@ -149,7 +153,7 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
                 voice_view.change2btnPressed()
             }
             State.ERROR -> {
-                tv_title.text = "Đã có lỗi xảy ra. Vui lòng thử lại."
+                tv_title.text = msgError
                 voice_view.visibility = View.VISIBLE
                 tv_status.text = ""
                 voice_view.change2btnOff()
@@ -259,5 +263,30 @@ class VoiceAnimationActivity : AppCompatActivity(), VoiceView.OnRecordListener {
         returnIntent.putExtra(TEXT_RESULT, translatedText)
         setResult(Activity.RESULT_OK, returnIntent)
         finish()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateToastApi()
+    }
+
+    private fun updateToastApi() {
+        when (appData_Singleton.getAppData()!!.appSettingData.languageApp) {
+            Constants.LANGUAGE_EN -> {
+                msgError = this.resources.getString(R.string.error_en)
+                msgListening = this.resources.getString(R.string.listening_en)
+                msgProcessing = this.resources.getString(R.string.processing_en)
+            }
+            Constants.LANGUAGE_VN -> {
+                msgError = this.resources.getString(R.string.error_vn)
+                msgListening = this.resources.getString(R.string.listening_vn)
+                msgProcessing = this.resources.getString(R.string.processing_vn)
+            }
+            Constants.LANGUAGE_JP -> {
+                msgError = this.resources.getString(R.string.error_jp)
+                msgListening = this.resources.getString(R.string.listening_jp)
+                msgProcessing = this.resources.getString(R.string.processing_jp)
+            }
+        }
     }
 }

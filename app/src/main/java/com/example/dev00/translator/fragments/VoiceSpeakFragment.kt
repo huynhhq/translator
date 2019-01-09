@@ -44,6 +44,7 @@ class VoiceSpeakFragment : Fragment() {
     private var languageCodePair = ""
     private var MODE_SPEAK = Constants.LEFT_MODE
     private lateinit var translateService: Any
+    private lateinit var msgToastApi: String
 
     private lateinit var adapterLeft: FlagListViewAdapter
     private lateinit var adapterRight: FlagListViewAdapter
@@ -184,43 +185,47 @@ class VoiceSpeakFragment : Fragment() {
 
                 call.enqueue(object : Callback<YandexResponse> {
                     override fun onResponse(call: Call<YandexResponse>, response: Response<YandexResponse>) {
-                        var translationResult = response.body().text[0]
+                        var translationResult = response.body()
+                        if (translationResult != null) {
+                            var textResult = translationResult.text[0]
+                            when (MODE_SPEAK) {
+                                0 -> {
+                                    textL = resultData
+                                    textR = textResult
+                                    localeStr = appData_Singleton.getAppData()!!.rightFlag!!.languageCode
+                                }
 
-                        when (MODE_SPEAK) {
-                            0 -> {
-                                textL = resultData
-                                textR = translationResult
-                                localeStr = appData_Singleton.getAppData()!!.rightFlag!!.languageCode
+                                1 -> {
+                                    textL = textResult
+                                    textR = resultData
+                                    localeStr = appData_Singleton.getAppData()!!.leftFlag!!.languageCode
+                                }
                             }
 
-                            1 -> {
-                                textL = translationResult
-                                textR = resultData
-                                localeStr = appData_Singleton.getAppData()!!.leftFlag!!.languageCode
+                            appData_Singleton.getAppData()!!
+                                    .arrTranslateData
+                                    .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
+                                            , textL
+                                            , appData_Singleton.getAppData()!!.rightFlag
+                                            , textR))
+
+                            listSpeakTextViewAdapter.setItemList(appData_Singleton
+                                    .getAppData()!!.arrTranslateData)
+                            listSpeakTextViewAdapter.notifyItemInserted(appData_Singleton.getAppData()!!
+                                    .arrTranslateData.size - 1)
+                            activity!!.main_rcv.scrollToPosition(appData_Singleton.getAppData()!!
+                                    .arrTranslateData.size - 1)
+                            activity!!.main_rcv.itemAnimator?.apply {
+                                addDuration = 350
+                                removeDuration = 100
+                                moveDuration = 350
+                                changeDuration = 100
                             }
+
+                            TTS(activity!!, textResult, localeStr)
+                        } else {
+                            Utils.createToast(activity!!, msgToastApi)
                         }
-
-                        appData_Singleton.getAppData()!!
-                                .arrTranslateData
-                                .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
-                                        , textL
-                                        , appData_Singleton.getAppData()!!.rightFlag
-                                        , textR))
-
-                        listSpeakTextViewAdapter.setItemList(appData_Singleton
-                                .getAppData()!!.arrTranslateData)
-                        listSpeakTextViewAdapter.notifyItemInserted(appData_Singleton.getAppData()!!
-                                .arrTranslateData.size - 1)
-                        activity!!.main_rcv.scrollToPosition(appData_Singleton.getAppData()!!
-                                .arrTranslateData.size - 1)
-                        activity!!.main_rcv.itemAnimator?.apply {
-                            addDuration = 350
-                            removeDuration = 100
-                            moveDuration = 350
-                            changeDuration = 100
-                        }
-
-                        TTS(activity!!, translationResult, localeStr)
                     }
 
                     override fun onFailure(call: Call<YandexResponse>?, t: Throwable?) {
@@ -244,43 +249,47 @@ class VoiceSpeakFragment : Fragment() {
                 call.enqueue(object : Callback<GoogleResponse> {
 
                     override fun onResponse(call: Call<GoogleResponse>, response: Response<GoogleResponse>) {
-                        var translationResult = response.body().data.translations[0].translatedText
+                        var translationResult = response.body()
+                        if (translationResult != null) {
+                            var textResult = translationResult.data.translations[0].translatedText
+                            when (MODE_SPEAK) {
+                                0 -> {
+                                    textL = resultData
+                                    textR = textResult
+                                    localeStr = appData_Singleton.getAppData()!!.rightFlag!!.languageCode
+                                }
 
-                        when (MODE_SPEAK) {
-                            0 -> {
-                                textL = resultData
-                                textR = translationResult
-                                localeStr = appData_Singleton.getAppData()!!.rightFlag!!.languageCode
+                                1 -> {
+                                    textL = textResult
+                                    textR = resultData
+                                    localeStr = appData_Singleton.getAppData()!!.leftFlag!!.languageCode
+                                }
                             }
 
-                            1 -> {
-                                textL = translationResult
-                                textR = resultData
-                                localeStr = appData_Singleton.getAppData()!!.leftFlag!!.languageCode
+                            appData_Singleton.getAppData()!!
+                                    .arrTranslateData
+                                    .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
+                                            , textL
+                                            , appData_Singleton.getAppData()!!.rightFlag
+                                            , textR))
+
+                            listSpeakTextViewAdapter.setItemList(appData_Singleton.getAppData()!!
+                                    .arrTranslateData)
+                            listSpeakTextViewAdapter.notifyItemInserted(appData_Singleton.getAppData()!!
+                                    .arrTranslateData.size - 1)
+                            activity!!.main_rcv.scrollToPosition(appData_Singleton.getAppData()!!
+                                    .arrTranslateData.size - 1)
+                            activity!!.main_rcv.itemAnimator?.apply {
+                                addDuration = 350
+                                removeDuration = 100
+                                moveDuration = 350
+                                changeDuration = 100
                             }
+
+                            TTS(activity!!, textResult, localeStr)
+                        } else {
+                            Utils.createToast(activity!!, msgToastApi)
                         }
-
-                        appData_Singleton.getAppData()!!
-                                .arrTranslateData
-                                .add(SpTextData(appData_Singleton.getAppData()!!.leftFlag
-                                        , textL
-                                        , appData_Singleton.getAppData()!!.rightFlag
-                                        , textR))
-
-                        listSpeakTextViewAdapter.setItemList(appData_Singleton.getAppData()!!
-                                .arrTranslateData)
-                        listSpeakTextViewAdapter.notifyItemInserted(appData_Singleton.getAppData()!!
-                                .arrTranslateData.size - 1)
-                        activity!!.main_rcv.scrollToPosition(appData_Singleton.getAppData()!!
-                                .arrTranslateData.size - 1)
-                        activity!!.main_rcv.itemAnimator?.apply {
-                            addDuration = 350
-                            removeDuration = 100
-                            moveDuration = 350
-                            changeDuration = 100
-                        }
-
-                        TTS(activity!!, translationResult, localeStr)
                     }
 
                     override fun onFailure(call: Call<GoogleResponse>?, t: Throwable?) {
@@ -436,6 +445,7 @@ class VoiceSpeakFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         changeListFlagAfterChange()
+        updateToastApi()
     }
 
     private fun changeListFlagAfterChange() {
@@ -465,6 +475,20 @@ class VoiceSpeakFragment : Fragment() {
 
                 appData_Singleton.getAppData()!!.leftFlag = listGoogleFlags[lastPosLeft]
                 appData_Singleton.getAppData()!!.rightFlag = listGoogleFlags[lastPosRight]
+            }
+        }
+    }
+
+    private fun updateToastApi() {
+        when (appData_Singleton.getAppData()!!.appSettingData.languageApp) {
+            Constants.LANGUAGE_EN -> {
+                msgToastApi = activity!!.resources.getString(R.string.pl_en)
+            }
+            Constants.LANGUAGE_VN -> {
+                msgToastApi = activity!!.resources.getString(R.string.pl_vn)
+            }
+            Constants.LANGUAGE_JP -> {
+                msgToastApi = activity!!.resources.getString(R.string.pl_jp)
             }
         }
     }

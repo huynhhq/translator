@@ -10,27 +10,38 @@ import com.example.dev00.translator.fragments.VoiceSpeakFragment
 import `in`.championswimmer.sfg.lib.SimpleFingerGestures
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Handler
+import android.util.Log
+import android.widget.RelativeLayout
+import android.widget.TextView
 import com.example.dev00.translator.R.id.*
 import com.example.dev00.translator.fragments.OneVoiceFragment
 import com.example.dev00.translator.fragments.TypeTextFragment
 import com.example.dev00.translator.helpers.Constants
 import com.example.dev00.translator.utils.Utils
 import com.example.dev00.translator.models.*
-import com.google.gson.Gson
+import com.example.dev00.translator.services.NetworkChangeReceiver
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
 
 class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteractionListener
         , OneVoiceFragment.OnFragmentInteractionListener, TypeTextFragment.OnFragmentInteractionListener {
 
     private lateinit var context: Context
-    val gson = Gson()
     private var doubleBackToExitPressedOnce: Boolean = false
     private lateinit var appData_Singleton: AppData_Singleton
-    private var prefs: Prefs? = null
     private var menu: Menu? = null
-
-    private lateinit var appSettingData: AppSettingData
-    private val TAG_ONE_VOICE = "ONE_VOICE"
+    private lateinit var myReceiver: NetworkChangeReceiver
+    var bus = EventBus.getDefault()
+    private lateinit var netLayout: RelativeLayout
+    private lateinit var retry: TextView
+    private lateinit var waiting: TextView
+    //    private val TAG_ONE_VOICE = "ONE_VOICE"
     private val TAG_TWO_VOICE = "TWO_VOICE"
     private val TAG_TEXT_LEFT = "TEXT_LEFT"
     private val TAG_TEXT_RIGHT = "TEXT_RIGHT"
@@ -39,10 +50,21 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         context = this
+        appData_Singleton = AppData_Singleton.getInstance()
+        myReceiver = NetworkChangeReceiver()
+        retry = findViewById(R.id.retry)
+        waiting = findViewById(R.id.tv_waiting)
 
         setupToolbar()
 
-        initalAppData()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(myReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        }
+        if (!bus.isRegistered(this)) {
+//            Log.w("-------", " register bus 1111 ")
+            bus.register(this)
+        }
+        netLayout = findViewById(R.id.net_error)
 
         if (savedInstanceState == null) {
             supportFragmentManager
@@ -52,6 +74,12 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
         }
 
         setupSimpleFingerGestures()
+
+        if (Network.isConnectingToInternet(context)) {
+            netLayout.visibility = View.GONE
+        } else {
+            netLayout.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -224,24 +252,6 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
         actionBar.setDisplayUseLogoEnabled(true)
     }
 
-    private fun initalAppData() {
-        prefs = Prefs(this)
-        var json = prefs!!.appSettingData
-        if (json != null) {
-            appSettingData = gson.fromJson(json, AppSettingData::class.java)
-        } else {
-            appSettingData = AppSettingData(Constants.YANDEX_API, Constants.LANGUAGE_EN)
-        }
-        appData_Singleton = AppData_Singleton.getInstance()
-
-        var arrData: ArrayList<SpTextData> = arrayListOf()
-        if (appData_Singleton.getAppData() == null) {
-            appData_Singleton.setAppData(AppData(Utils.initalFromFlag()
-                    , Utils.initalToFlag()
-                    , appSettingData
-                    , arrData))
-        }
-    }
 
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -251,7 +261,7 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
             System.exit(0)
         } else {
             doubleBackToExitPressedOnce = true
-            when(appData_Singleton.getAppData()!!.appSettingData.languageApp){
+            when (appData_Singleton.getAppData()!!.appSettingData.languageApp) {
                 Constants.LANGUAGE_JP -> {
                     Utils.createToast(this@MainActivity, this.resources.getString(R.string.press_back_jp))
                 }
@@ -273,18 +283,24 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
                 var aboutUsMenu = menu.findItem(action_about_us)
                 settingMenu.title = context.resources.getString(R.string.setting_menu_en)
                 aboutUsMenu.title = context.resources.getString(R.string.about_us_menu_en)
+                retry.text = context.resources.getString(R.string.retry_en)
+                waiting.text = context.resources.getString(R.string.waiting_en)
             }
             Constants.LANGUAGE_VN -> {
                 var settingMenu = menu.findItem(action_settings)
                 var aboutUsMenu = menu.findItem(action_about_us)
                 settingMenu.title = context.resources.getString(R.string.setting_menu_vn)
                 aboutUsMenu.title = context.resources.getString(R.string.about_us_menu_vn)
+                retry.text = context.resources.getString(R.string.retry_vn)
+                waiting.text = context.resources.getString(R.string.waiting_vn)
             }
             Constants.LANGUAGE_JP -> {
                 var settingMenu = menu.findItem(action_settings)
                 var aboutUsMenu = menu.findItem(action_about_us)
                 settingMenu.title = context.resources.getString(R.string.setting_menu_jp)
                 aboutUsMenu.title = context.resources.getString(R.string.about_us_menu_jp)
+                retry.text = context.resources.getString(R.string.retry_jp)
+                waiting.text = context.resources.getString(R.string.waiting_jp)
             }
         }
     }
@@ -297,8 +313,25 @@ class MainActivity : AppCompatActivity(), VoiceSpeakFragment.OnFragmentInteracti
 
     override fun onResume() {
         super.onResume()
-        if(menu != null)
-        prepareMenuView(menu!!)
+        if (menu != null)
+            prepareMenuView(menu!!)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            unregisterReceiver(myReceiver)
+        }
+    }
+
+    @Subscribe
+    fun onEvent(name: String) {
+        if (name.equals(Constants.CONNECTED, ignoreCase = true)) {
+            netLayout.visibility = View.GONE
+        } else {
+            netLayout.visibility = View.VISIBLE
+        }
     }
 
 }

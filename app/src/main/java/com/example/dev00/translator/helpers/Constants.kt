@@ -35,6 +35,7 @@ class Constants {
 
         val MUST_IMPLEMENT_ONFRAGMENTINTERRACTIONLISTENER = " must implement OnFragmentInteractionListener"
         val CHECK_YOUR_INTERNET = "Please check your internet and try again!!!"
-
+        val NOT_CONNECTED = "FALSE"
+        val CONNECTED = "TRUE"
     }
 }

@@ -33,6 +33,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.example.dev00.translator.R
+import java.net.InetSocketAddress
+import java.net.Socket
 
 class Utils {
     companion object {
@@ -327,6 +329,7 @@ class Utils {
             config.setLocale(locale)
         }
 
+        @JvmStatic
         fun hideKeyboard(activity: Activity) {
             val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             //Find the currently focused view, so we can grab the correct window token from it.
@@ -337,6 +340,5 @@ class Utils {
             }
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
-
     }
 }

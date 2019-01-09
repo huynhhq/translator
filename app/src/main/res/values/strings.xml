@@ -15,10 +15,16 @@
     <string name="main_partner_jp">メインパートナー</string>
     <string name="toolbar_setting_jp">設定</string>
     <string name="toolbar_about_us_jp">会社概要</string>
-    <string name="press_back_jp">もう一度押すと終了します</string>
+    <string name="press_back_jp">もう一度押すと終了します。</string>
     <string name="mr_jp">PhanThanh Nhan 氏</string>
-    <string name="invest_jp">100％外国投資 (HAYABUSA Inc., JAPAN)</string>
+    <string name="invest_jp">100％外国投資 (HAYABUSA Inc., JAPAN)。</string>
     <string name="change_setting_msg_jp">正常に変更されました。</string>
+    <string name="retry_jp">ネットワークが自動的に接続されている場合。</string>
+    <string name="waiting_jp">インターネットを待っています。</string>
+    <string name="pl_jp">APIキーを確認してください!!!</string>
+    <string name="listening_jp">聞いている</string>
+    <string name="processing_jp">処理</string>
+    <string name="error_jp">エラーが発生しました。 もう一度やり直してください。</string>
     <!--End Japanese-->
 
     <!--English-->
@@ -35,10 +41,16 @@
     <string name="main_partner_en">Main Partner</string>
     <string name="toolbar_setting_en">Setting</string>
     <string name="toolbar_about_us_en">About us</string>
-    <string name="press_back_en">Press back again to exit</string>
+    <string name="press_back_en">Press back again to exit.</string>
     <string name="mr_en">Mr. PhanThanh Nhan</string>
     <string name="invest_en">100% Foreign Investment (HAYABUSA Inc., JAPAN)</string>
     <string name="change_setting_msg_en">Changed successfully.</string>
+    <string name="retry_en">If network is connect automatically redirect.</string>
+    <string name="waiting_en">Waiting for Internet.....</string>
+    <string name="pl_en">Please check the api key!!!</string>
+    <string name="listening_en">Listening</string>
+    <string name="processing_en">Processing</string>
+    <string name="error_en">An error has occurred. Please try again.</string>
     <!--End English-->
 
     <!--Vietnamese-->
@@ -55,9 +67,15 @@
     <string name="main_partner_vn">Đối tác chính</string>
     <string name="toolbar_setting_vn">Cài đặt</string>
     <string name="toolbar_about_us_vn">Giới thiệu</string>
-    <string name="press_back_vn">Nhấn Back thêm lần nữa để thoát</string>
+    <string name="press_back_vn">Nhấn Back thêm lần nữa để thoát.</string>
     <string name="mr_vn">Ông Phan Thành Nhân</string>
     <string name="invest_vn">100% đầu tư nước ngoài (HAYABUSA Inc., NHẬT BẢN)</string>
     <string name="change_setting_msg_vn">Đã thay đổi thành công.</string>
+    <string name="retry_vn">Nếu mạng được kết nối thì sẽ tự động chuyển hướng.</string>
+    <string name="waiting_vn">Đang đợi Internet.....</string>
+    <string name="pl_vn">Xin hãy kiểm tra api key!!!</string>
+    <string name="listening_vn">Đang lắng nghe</string>
+    <string name="processing_vn">Đang xử lý</string>
+    <string name="error_vn">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
     <!--End Vietnamese-->
 </resources>

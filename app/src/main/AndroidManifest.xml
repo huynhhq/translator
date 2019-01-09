@@ -36,7 +36,17 @@
         <activity android:name=".activities.AboutUsActivity" />
         <activity
             android:name=".activities.VoiceAnimationActivity"
-            android:theme="@style/Theme.AppCompat.Dialog.AlertActivity"/>
+            android:theme="@style/Theme.AppCompat.Dialog.AlertActivity" />
+
+        <receiver
+            android:name=".services.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver">
+        <intent-filter>
+            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+        </intent-filter>
+    </receiver>
+
     </application>
 
 </manifest>
