@@ -27,6 +27,7 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.graphics.Matrix
 import android.graphics.PorterDuff
+import android.speech.SpeechRecognizer
 import android.support.v4.content.ContextCompat
 import android.view.MotionEvent
 import android.view.View
@@ -235,10 +236,10 @@ class Utils {
         }
 
         @JvmStatic
-        fun imageEffect(imageView: ImageView, context: Context){
+        fun imageEffect(imageView: ImageView, context: Context) {
             imageView.setOnTouchListener(object : View.OnTouchListener {
                 override fun onTouch(v: View, m: MotionEvent): Boolean {
-                    when(m.action){
+                    when (m.action) {
                         MotionEvent.ACTION_DOWN -> {
                             imageView.setBackgroundColor(ContextCompat.getColor(context, R.color.md_yellow_900))
                             return false
@@ -254,10 +255,10 @@ class Utils {
         }
 
         @JvmStatic
-        fun imageChangeEffect(imageView: ImageView,imageViewUp: Int, imageViewDown: Int, context: Context){
+        fun imageChangeEffect(imageView: ImageView, imageViewUp: Int, imageViewDown: Int, context: Context) {
             imageView.setOnTouchListener(object : View.OnTouchListener {
                 override fun onTouch(v: View, m: MotionEvent): Boolean {
-                    when(m.action){
+                    when (m.action) {
                         MotionEvent.ACTION_DOWN -> {
                             imageView.setImageDrawable(ContextCompat.getDrawable(context, imageViewDown))
                             return false
@@ -298,7 +299,7 @@ class Utils {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 setSystemLocale(config, locale);
-            }else{
+            } else {
                 setSystemLocaleLegacy(config, locale);
             }
 
@@ -310,7 +311,7 @@ class Utils {
         }
 
         @SuppressWarnings("deprecation")
-        private fun getSystemLocaleLegacy(config: Configuration): Locale{
+        private fun getSystemLocaleLegacy(config: Configuration): Locale {
             return config.locale;
         }
 
@@ -339,6 +340,49 @@ class Utils {
                 view = View(activity)
             }
             imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        @JvmStatic
+        fun getErrorMessage(errorCode: Int): String {
+            var msg = "Didn't understand, please try again."
+            when (errorCode) {
+                SpeechRecognizer.ERROR_AUDIO -> {
+                    msg = "Audio recording error"
+                }
+
+                SpeechRecognizer.ERROR_CLIENT -> {
+                    msg = "Client side error"
+                }
+
+                SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> {
+                    msg = "Insufficient permissions"
+                }
+
+                SpeechRecognizer.ERROR_NETWORK -> {
+                    msg = "Network error"
+                }
+
+                SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> {
+                    msg = "Network timeout"
+                }
+
+                SpeechRecognizer.ERROR_NO_MATCH -> {
+                    msg = "No match"
+                }
+
+                SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> {
+                    msg = "Recognition service busy"
+                }
+
+                SpeechRecognizer.ERROR_SERVER -> {
+                    msg = "Error from server"
+                }
+
+                SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> {
+                    msg = "No speech input"
+                }
+            }
+            return msg
         }
     }
 }
